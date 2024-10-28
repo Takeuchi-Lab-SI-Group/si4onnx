@@ -8,7 +8,7 @@ The computed p-values maintain statistical validity and enable precise control o
 
 ## Requirements
 Python version:
-- Python 3.6 or later
+- Python 3.10 or later
 
 Required packages:
 - numpy 1.26.4 or later
