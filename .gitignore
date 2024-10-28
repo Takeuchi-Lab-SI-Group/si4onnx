@@ -1,0 +1,11 @@
+si4onnx/si4onnx.egg-info/
+si4onnx.egg-info/
+**/__pycache__/
+build/
+.mypy_cache/
+venv/
+.venv/
+dist/
+
+*.onnx
+*.pth
