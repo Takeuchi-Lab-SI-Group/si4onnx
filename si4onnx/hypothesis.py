@@ -83,7 +83,6 @@ class PresetHypothesis(Hypothesis):
         o_idx: int = 0,
         post_process: nn.Module | list[nn.Module] = [],
         use_norm: bool = False,
-        mask: torch.Tensor | np.ndarray | None = None,
         **kwargs,
     ):
         """Base class for preset hypotheses in selective inference.
@@ -119,7 +118,6 @@ class PresetHypothesis(Hypothesis):
         )
         self.use_norm = use_norm
         self.use_sigmoid = False
-        self.mask = mask.squeeze() if mask is not None else None
 
     def _construct_roi_vector(
         self, si_model: NN, X: torch.Tensor | list[torch.Tensor] | tuple[torch.Tensor]
@@ -189,6 +187,7 @@ class PresetHypothesis(Hypothesis):
         self.score_map = score_map
 
         roi = (score_map > self.thrshold).int()
+
         # Apply mask
         if self.mask is not None:
             roi = roi.logical_and(self.mask).int()
@@ -286,7 +285,6 @@ class BackMeanDiff(PresetHypothesis):
         o_idx: int = 0,
         post_process: nn.Module | list[nn.Module] = [],
         use_norm: bool = False,
-        mask: torch.Tensor | np.ndarray | None = None,
         **kwargs,
     ):
         """Hypothesis for the mean difference between the ROI and the background region in the input data.
@@ -305,20 +303,15 @@ class BackMeanDiff(PresetHypothesis):
             Defaults to 0.
         use_norm : bool, optional
             Whether to apply min-max normalization to the `score_map`.
-        mask : torch.Tensor | numpy.ndarray | None, optional
-            The mask can be used to specify the region that may be used for the hypothesis test.
-            The mask to apply the logical AND operator to the `roi` and `non_roi`.
-            Defaults to None.
         """
-        super().__init__(
-            threshold, i_idx, o_idx, post_process, use_norm, mask, **kwargs
-        )
+        super().__init__(threshold, i_idx, o_idx, post_process, use_norm, **kwargs)
 
     def construct_hypothesis(
         self,
         si_model: NN,
         X: torch.Tensor | list[torch.Tensor] | tuple[torch.Tensor],
         var: float | torch.Tensor | np.ndarray,
+        mask: torch.Tensor | np.ndarray | None = None,
     ):
         """
         Parameters
@@ -327,7 +320,14 @@ class BackMeanDiff(PresetHypothesis):
             The model for the selective inference.
         X : torch.Tensor | list[torch.Tensor] | tuple[torch.Tensor]
             The input data.
+        var : float | torch.Tensor | np.ndarray
+            The variance of the noise.
+        mask : torch.Tensor | numpy.ndarray | None, optional
+            The mask can be used to specify the region that may be used for the hypothesis test.
+            The mask to apply the logical AND operator to the `roi` and `non_roi`.
+            Defaults to None.
         """
+        self.mask = mask
         input_x, roi, roi_vector = self._construct_roi_vector(si_model, X)
 
         non_roi = 1 - roi
@@ -397,7 +397,6 @@ class NeighborMeanDiff(PresetHypothesis):
         o_idx: int = 0,
         post_process: nn.Module | list[nn.Module] = [],
         use_norm: bool = False,
-        mask: torch.Tensor | np.ndarray | None = None,
         **kwargs,
     ):
         """Hypothesis for the mean difference between the ROI and the neighborhood region in the input data.
@@ -422,14 +421,8 @@ class NeighborMeanDiff(PresetHypothesis):
             Defaults to 0.
         use_norm : bool, optional
             Whether to apply min-max normalization to the `score_map`.
-        mask : torch.Tensor | numpy.ndarray | None, optional
-            The mask can be used to specify the region that may be used for the hypothesis test.
-            The mask to apply the logical AND operator to the `roi` and `non_roi`.
-            Defaults to None.
         """
-        super().__init__(
-            threshold, i_idx, o_idx, post_process, use_norm, mask, **kwargs
-        )
+        super().__init__(threshold, i_idx, o_idx, post_process, use_norm, **kwargs)
         self.neighborhood_range = neighborhood_range
 
     def construct_hypothesis(
@@ -437,6 +430,7 @@ class NeighborMeanDiff(PresetHypothesis):
         si_model: NN,
         X: torch.Tensor | list[torch.Tensor] | tuple[torch.Tensor],
         var: float | torch.Tensor | np.ndarray,
+        mask: torch.Tensor | np.ndarray | None = None,
     ):
         """
         Parameters
@@ -447,7 +441,12 @@ class NeighborMeanDiff(PresetHypothesis):
             The input data.
         var: float | torch.Tensor | np.ndarray
             The variance of the noise.
+        mask : torch.Tensor | numpy.ndarray | None, optional
+            The mask can be used to specify the region that may be used for the hypothesis test.
+            The mask to apply the logical AND operator to the `roi` and `non_roi`.
+            Defaults to None.
         """
+        self.mask = mask
         input_x, roi, roi_vector = self._construct_roi_vector(si_model, X)
 
         # set parameters for neighborhood region
@@ -534,7 +533,6 @@ class ReferenceMeanDiff(PresetHypothesis):
         o_idx: int = 0,
         post_process: nn.Module | list[nn.Module] = [],
         use_norm: bool = False,
-        mask: torch.Tensor | np.ndarray | None = None,
         **kwargs,
     ):
         """Hypothesis for the mean difference between the ROI and the reference data in the input data.
@@ -555,14 +553,8 @@ class ReferenceMeanDiff(PresetHypothesis):
             Defaults to 0.
         use_norm : bool, optional
             Whether to apply min-max normalization to the `score_map`.
-        mask : torch.Tensor | numpy.ndarray | None, optional
-            The mask can be used to specify the region that may be used for the hypothesis test.
-            The mask to apply the logical AND operator to the `roi` and `non_roi`.
-            Defaults to None.
         """
-        super().__init__(
-            threshold, i_idx, o_idx, post_process, use_norm, mask, **kwargs
-        )
+        super().__init__(threshold, i_idx, o_idx, post_process, use_norm, **kwargs)
         # self.reference_data = reference_data
 
     def construct_hypothesis(
@@ -570,6 +562,7 @@ class ReferenceMeanDiff(PresetHypothesis):
         si_model: NN,
         X: tuple,
         var: float | torch.Tensor | np.ndarray,
+        mask: torch.Tensor | np.ndarray | None = None,
     ):
         """
         Parameters
@@ -581,12 +574,16 @@ class ReferenceMeanDiff(PresetHypothesis):
             (input_data, reference_data)
         var: float | torch.Tensor | numpy.ndarray
             The variance of the noise.
+        mask : torch.Tensor | numpy.ndarray | None, optional
+            The mask can be used to specify the region that may be used for the hypothesis test.
+            The mask to apply the logical AND operator to the `roi` and `non_roi`.
+            Defaults to None.
         """
         if not isinstance(X, tuple) or len(X) != 2:
             raise ValueError(
                 f"Input must be a tuple of length 2, got {type(X).__name__}"
             )
-
+        self.mask = mask
         self.reference_data = X[1]
         if self.reference_data is None:
             raise ValueError("reference_data is not set.")
