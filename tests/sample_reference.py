@@ -15,7 +15,7 @@ utils.set_thread()
 utils.set_seed(0)
 
 
-size = 28
+size = 16
 rng = np.random.default_rng(0)
 x = torch.from_numpy(rng.normal(size=(1, 1, size, size)))
 x_ref = torch.from_numpy(rng.normal(size=(1, 1, size, size)))

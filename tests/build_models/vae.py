@@ -1,5 +1,8 @@
-import sys
 import os
+import sys
+
+sys.path.insert(0, os.path.abspath("../"))
+
 import numpy as np
 import torch
 import torch.nn as nn
@@ -8,20 +11,25 @@ from torch.utils.data import DataLoader
 from torch.nn import functional as F
 
 sys.path.append(os.pardir)
-from si4onnx.tests.dataset.noisy_mnist import NoisyMNIST
+import si4onnx
 
 # set seed
 torch.manual_seed(0)
 np.random.seed(0)
 
-epochs = 200
-batch_size = 16
+
 lr = 0.01
 
 # make dataloader
-num_samples = 2000
-train_dataset = NoisyMNIST(num_samples)
-train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
+num_samples = 200
+batch_size = 16
+epochs = 10
+
+train_dataset = si4onnx.data.SyntheticDataset(
+    num_samples=num_samples, shape=(1, 28, 28)
+)
+train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
+
 
 class Encoder(nn.Module):
     def __init__(self, latent_dim):
@@ -44,15 +52,20 @@ class Encoder(nn.Module):
         logstd = self.fc2_logstd(x)
         return mean, logstd
 
+
 class Decoder(nn.Module):
     def __init__(self, latent_dim):
         super().__init__()
         self.fc1 = nn.Linear(latent_dim, 512)
         self.fc2 = nn.Linear(512, 64 * 7 * 7)
         self.dec = nn.Sequential(
-            nn.ConvTranspose2d(64, 32, kernel_size=3, stride=2, padding=1, output_padding=1),
+            nn.ConvTranspose2d(
+                64, 32, kernel_size=3, stride=2, padding=1, output_padding=1
+            ),
             nn.ReLU(),
-            nn.ConvTranspose2d(32, 1, kernel_size=3, stride=2, padding=1, output_padding=1),
+            nn.ConvTranspose2d(
+                32, 1, kernel_size=3, stride=2, padding=1, output_padding=1
+            ),
             # nn.Sigmoid()
         )
 
@@ -62,7 +75,8 @@ class Decoder(nn.Module):
         x = x.view(x.size(0), 64, 7, 7)
         x = self.dec(x)
         return x
-    
+
+
 class VAE(nn.Module):
     def __init__(self, latent_dim):
         super().__init__()
@@ -82,34 +96,39 @@ class VAE(nn.Module):
         samples = self.decoder(z)
         return samples
 
+
 latent_dim = 10
 model = VAE(latent_dim).to("cpu")
 optimizer = optim.Adam(model.parameters(), lr=0.001)
 
+
 def vae_loss(recon_x, x, mean, logstd):
-    recon_loss = F.mse_loss(recon_x, x, reduction='sum')
+    recon_loss = F.mse_loss(recon_x, x, reduction="sum")
     kl_div = -0.5 * torch.sum(1 + logstd - mean.pow(2) - logstd.exp())
     return recon_loss + kl_div
+
+
 # train
 for epoch in range(epochs):
-    for images in train_loader:
+    for images, _, _ in train_dataloader:
         images = images.to("cpu")
         recon_images, mean, logstd = model(images)
         loss = vae_loss(recon_images, images, mean, logstd)
-        
+
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
-        
-    print(f'Epoch [{epoch+1}/{epochs}], Loss: {loss.item():.4f}')
+
+    print(f"Epoch [{epoch+1}/{epochs}], Loss: {loss.item():.4f}")
 
 
 # save model
-model_path = './tests/models/vae.onnx'
+model_path = "../tests/models/vae.onnx"
 input_x = torch.randn(1, 1, 28, 28)
 torch.onnx.export(model, input_x, model_path)
 
-# save pth
+""" save pth
 model.eval()
-pth_path = model_path.replace('.onnx', '.pth')
+pth_path = model_path.replace(".onnx", ".pth")
 torch.save(model, pth_path)
+"""

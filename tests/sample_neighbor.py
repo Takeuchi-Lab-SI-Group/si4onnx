@@ -15,7 +15,7 @@ utils.set_seed(0)
 input_x = torch.randn(1, 1, 128)
 
 # load onnx model
-model_path = "../tests/models/unet.onnx"
+model_path = "../tests/models/unet1d.onnx"
 onnx_model = onnx.load(model_path)
 
 # load si model
