@@ -4,68 +4,80 @@ from torch.utils.data import Dataset
 
 
 def generate_iid_data(
-    size, shape, loc=0, scale=1, local_signal=0, local_size=None, seed=0
+    num_samples, shape, loc=0, scale=1, local_signal=0, local_size=None, seed=0
 ):
-    """Generate synthetic data with iid Gaussian noise.
+    """Generate synthetic data with iid Gaussian noise and local signals.
 
     Parameters
     ----------
-    size : int
+    num_samples : int
         The number of samples.
-    shape : int or tuple
-        The shape of the data.
+    shape : tuple
+        The shape of the data (channels, height, width).
     loc : float, optional
         The mean of the Gaussian noise. Default is 0.0.
     scale : float, optional
         The standard deviation of the Gaussian noise. Default is 1.0.
-    signal : float, optional
-        The signal strength. Default is 1.0.
+    local_signal : float, optional
+        The strength of the local signal to add. Default is 0.0.
+    local_size : int or None, optional
+        The size of the local signal region. If None, uses min(height, width) // 3.
     seed : int, optional
-        The seed of the random number generator. Default is None.
+        The seed for reproducibility. Default is 0.
 
     Returns
     -------
     np.ndarray
-        The generated data.
+        The generated data of shape (size, channels, height, width).
     np.ndarray
-        The masks of the signal.
+        Binary masks indicating signal locations of shape (size, channels, height, width).
     np.ndarray
-        The labels indicating the presence of the signal.
+        Binary labels indicating presence of signal of shape (size,).
     """
+    if isinstance(shape, int):
+        shape = (1, shape, shape)  # (channels, height, width)
+    elif len(shape) == 2:
+        shape = (1, *shape)  # Add channel dimension if not specified
+
+    channels, height, width = shape
+
     if local_size is None:
-        local_size = shape[-1] // 3
+        local_size = min(height, width) // 3
+
+    # Validate local_size against spatial dimensions only
+    assert (
+        local_size < height
+    ), f"local_size ({local_size}) must be less than height ({height})"
+    assert (
+        local_size < width
+    ), f"local_size ({local_size}) must be less than width ({width})"
 
     rng = np.random.default_rng(seed=seed)
 
-    if isinstance(shape, int):
-        shape = (shape,)
+    # Generate base noise
+    data = rng.normal(loc, scale, (num_samples, channels, height, width))
 
-    data = rng.normal(loc, scale, (size, *shape))
+    # Initialize masks
+    masks = np.zeros((num_samples, channels, height, width))
 
-    masks = np.zeros((size, *shape))
+    # Add local signals for each sample
+    for i in range(num_samples):
+        # Generate random position for the top-left corner of the local signal
+        # Only for spatial dimensions (height, width)
+        h_start = rng.integers(0, height - local_size)
+        w_start = rng.integers(0, width - local_size)
 
-    for dim in shape[1:]:
-        assert (
-            local_size < dim
-        ), "local_size must be less than to the shape of the data."
-
-    local_shape = tuple(max(dim, local_size) for dim in shape[1:])
-
-    local_positions = [
-        tuple(rng.integers(0, max(1, data_dim - local_dim), size))
-        for data_dim, local_dim in zip(shape, local_shape)
-    ]
-
-    for i in range(size):
-        slices = tuple(
-            slice(pos[i], pos[i] + local_dim)
-            for pos, local_dim in zip(local_positions, local_shape)
+        # Apply signal to all channels at the same spatial location
+        data[i, :, h_start : h_start + local_size, w_start : w_start + local_size] += (
+            local_signal
         )
-        data[i][slices] += local_signal
-        if local_signal != 0:
-            masks[i][slices] = 1
 
-    labels = (local_signal != 0) * np.ones(size, dtype=int)
+        if local_signal != 0:
+            masks[
+                i, :, h_start : h_start + local_size, w_start : w_start + local_size
+            ] = 1
+
+    labels = (local_signal != 0) * np.ones(num_samples, dtype=int)
 
     return data, masks, labels
 
@@ -93,7 +105,7 @@ class SyntheticDataset(Dataset):
     Examples
     --------
     >>> dataset = SyntheticDataset(
-    ...     size=1000,
+    ...     num_samples=1000,
     ...     shape=(32, 32),
     ...     loc=0,
     ...     scale=1,
@@ -106,7 +118,7 @@ class SyntheticDataset(Dataset):
 
     def __init__(
         self,
-        size,
+        num_samples,
         shape,
         loc=0,
         scale=1,
@@ -115,7 +127,7 @@ class SyntheticDataset(Dataset):
         seed=0,
     ):
         self.data, self.masks, self.labels = generate_iid_data(
-            size,
+            num_samples,
             shape,
             loc,
             scale,
