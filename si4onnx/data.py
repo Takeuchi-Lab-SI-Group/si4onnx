@@ -4,13 +4,13 @@ from torch.utils.data import Dataset
 
 
 def generate_iid_data(
-    num_samples, shape, loc=0, scale=1, local_signal=0, local_size=None, seed=0
+    n_samples, shape, loc=0, scale=1, local_signal=0, local_size=None, seed=0
 ):
     """Generate synthetic data with iid Gaussian noise and local signals.
 
     Parameters
     ----------
-    num_samples : int
+    n_samples : int
         The number of samples.
     shape : tuple
         The shape of the data (channels, height, width).
@@ -55,13 +55,13 @@ def generate_iid_data(
     rng = np.random.default_rng(seed=seed)
 
     # Generate base noise
-    data = rng.normal(loc, scale, (num_samples, channels, height, width))
+    data = rng.normal(loc, scale, (n_samples, channels, height, width))
 
     # Initialize masks
-    masks = np.zeros((num_samples, channels, height, width))
+    masks = np.zeros((n_samples, channels, height, width))
 
     # Add local signals for each sample
-    for i in range(num_samples):
+    for i in range(n_samples):
         # Generate random position for the top-left corner of the local signal
         # Only for spatial dimensions (height, width)
         h_start = rng.integers(0, height - local_size)
@@ -77,7 +77,7 @@ def generate_iid_data(
                 i, :, h_start : h_start + local_size, w_start : w_start + local_size
             ] = 1
 
-    labels = (local_signal != 0) * np.ones(num_samples, dtype=int)
+    labels = (local_signal != 0) * np.ones(n_samples, dtype=int)
 
     return data, masks, labels
 
@@ -105,7 +105,7 @@ class SyntheticDataset(Dataset):
     Examples
     --------
     >>> dataset = SyntheticDataset(
-    ...     num_samples=1000,
+    ...     n_samples=1000,
     ...     shape=(32, 32),
     ...     loc=0,
     ...     scale=1,
@@ -118,7 +118,7 @@ class SyntheticDataset(Dataset):
 
     def __init__(
         self,
-        num_samples,
+        n_samples,
         shape,
         loc=0,
         scale=1,
@@ -127,7 +127,7 @@ class SyntheticDataset(Dataset):
         seed=0,
     ):
         self.data, self.masks, self.labels = generate_iid_data(
-            num_samples,
+            n_samples,
             shape,
             loc,
             scale,
