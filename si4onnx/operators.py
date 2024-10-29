@@ -56,6 +56,48 @@ class InputDiff:
         return x, a, b, l, u
 
 
+class Neg:
+    def __init__(self, *args, **kwargs):
+        """
+        The class computes the negative value of the input.
+        """
+        super().__init__()
+
+    def forward(self, x):
+        return torch.neg(x)
+
+    def forward_si(self, x, a, b, l, u, z):
+        """
+        Parameters
+        ----------
+        x : torch.Tensor | list[torch.Tensor]
+            input tensor or tensor list
+        a : torch.Tensor | list[torch.Tensor]
+            a tensor or tensor list
+        b : torch.Tensor | list[torch.Tensor]
+            b tensor or tensor list
+        l : torch.Tensor | list[torch.Tensor]
+            l tensor or tensor list
+        u : torch.Tensor | list[torch.Tensor]
+            u tensor or tensor list
+        z : float
+
+        Returns
+        -------
+        torch.Tensor | list[torch.Tensor]
+            -x tensor or tensor list
+        torch.Tensor | list[torch.Tensor]
+            -a tensor or tensor list
+        torch.Tensor | list[torch.Tensor]
+            -b tensor or tensor list
+        l : torch.Tensor | list[torch.Tensor]
+            lower bound of the truncated interval
+        u : torch.Tensor | list[torch.Tensor]
+            upper bound of the truncated interval
+        """
+        return torch.neg(x), torch.neg(a), torch.neg(b), l, u
+
+
 class Abs:
     def __init__(self, *args, **kwargs):
         """The class computes the absolute value of the input and the interval of the truncated interval."""
