@@ -181,15 +181,15 @@ class AverageFilter:
 
 
 class GaussianFilter:
-    def __init__(self, kernel_size, sigma):
+    def __init__(self, kernel_size: int = 3, sigma: float = 1.0):
         """Apply a Gaussian filter to the input tensor.
-        
+
         Parameters
         ----------
         kernel_size : int
-            size of the Gaussian kernel
-        sigma : float
-            standard deviation of the Gaussian kernel        
+            size of the Gaussian kernel. Default to 3.
+        sigma : float | int
+            standard deviation of the Gaussian kernel. Default to 1.0.
         """
         super().__init__()
         self.kernel_size = kernel_size
