@@ -186,11 +186,11 @@ class PresetHypothesis(Hypothesis):
         score_map = score_map.squeeze()
         self.score_map = score_map
 
-        roi = (score_map > self.thrshold).int()
+        roi = (score_map > self.thrshold).int().squeeze()
 
         # Apply mask
         if self.mask is not None:
-            roi = roi.logical_and(self.mask).int()
+            roi = roi.logical_and(self.mask).int().squeeze()
         self.roi = roi
 
         roi_vector = roi.flatten().int()
@@ -452,22 +452,24 @@ class NeighborMeanDiff(PresetHypothesis):
         # set parameters for neighborhood region
         kernel_size = 2 * self.neighborhood_range + 1
         padding = self.neighborhood_range
-        ndim = self.roi.dim()
+        ndim = roi.dim()
 
         # compute the neighborhood region
         if ndim == 1:
-            x_expanded = self.roi.unsqueeze(0).unsqueeze(0).float()
+            x_expanded = roi.unsqueeze(0).unsqueeze(0).float()
             neighborhood_region = F.max_pool1d(
                 x_expanded, kernel_size=kernel_size, stride=1, padding=padding
             )
         elif ndim == 2:
-            x_expanded = self.roi.unsqueeze(0).unsqueeze(0).float()
+            x_expanded = roi.unsqueeze(0).unsqueeze(0).float()
             neighborhood_region = F.max_pool2d(
                 x_expanded, kernel_size=kernel_size, stride=1, padding=padding
             )
+        else:
+            raise ValueError(f"Unsupported dimension: {ndim}")
 
         neighborhood_region = neighborhood_region.squeeze()
-        neighborhood_region = neighborhood_region.logical_xor(self.roi).int()
+        neighborhood_region = neighborhood_region.logical_xor(roi).int()
         if self.mask is not None:
             neighborhood_region = neighborhood_region.logical_and(self.mask).int()
 
