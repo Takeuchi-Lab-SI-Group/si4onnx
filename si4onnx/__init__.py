@@ -7,6 +7,7 @@ from .hypothesis import (
 )
 from .operators import (
     InputDiff,
+    Neg,
     Abs,
     AverageFilter,
     GaussianFilter,
@@ -23,6 +24,7 @@ __all__ = [
     "NeighborMeanDiff",
     "ReferenceMeanDiff",
     "InputDiff",
+    "Neg",
     "Abs",
     "AverageFilter",
     "GaussianFilter",
