@@ -126,10 +126,24 @@ class SIModel(ABC):
         """
         pass
 
-    def forward(self, input):
+    def forward(self, input: torch.Tensor | np.ndarray) -> torch.Tensor:
         return self.si_model.forward(input)
 
-    def inference(self, input, var, **kwargs) -> SelectiveInferenceResult:
+    def inference(
+        self,
+        input: torch.Tensor | np.ndarray,
+        var: float | np.ndarray | torch.Tensor,
+        **kwargs,
+    ) -> SelectiveInferenceResult:
+        """
+        Parameters
+        ----------
+        input : torch.Tensor | np.ndarray | list[torch.Tensor | np.ndarray] | tuple[torch.Tensor | np.ndarray, ...]
+            Input of NN
+        var : float | np.ndarray | torch.Tensor
+            Covariance matrix of the noise of input.
+        **kwargs : Any
+        """
         self.construct_hypothesis(input, var)
         result = self.si_calculator.inference(
             algorithm=self.algorithm,
@@ -142,12 +156,28 @@ class SIModel(ABC):
 class PresetSIModel(SIModel):
     def __init__(
         self,
-        model,
-        hypothesis,
+        model: ModelProto,
+        hypothesis: PresetHypothesis,
         seed: int = None,
         memoization: bool = True,
         **kwargs,
     ):
+        """SIModel class for Preset Hypothesis
+
+        Parameters
+        ----------
+        model : onnx.ModelProto
+            The onnx model instance.
+        hypothesis : PresetHypothesis
+            The hypothesis setting.
+        seed : int, optional
+            The seed of random number generator.
+            If the onnx model contains RandomNormalLike layers, the seed is used to generate the same random numbers.
+            Default to None.
+        memoization : bool, optional
+            Whether to use memoization.
+            If True, the memoization is enabled. Default to True.
+        """
         self.si_model = nn.NN(model=model, seed=seed, memoization=memoization)
         self.hypothesis = hypothesis
         self.si_calculator = None
@@ -155,8 +185,19 @@ class PresetSIModel(SIModel):
         self.score_map = None
         self.roi = None
 
-    def construct_hypothesis(self, input, var, **kwargs):
-        self.hypothesis.construct_hypothesis(self.si_model, input, var, **kwargs)
+    def construct_hypothesis(
+        self,
+        input: torch.Tensor
+        | np.ndarray
+        | list[torch.Tensor | np.ndarray]
+        | tuple[torch.Tensor | np.ndarray, ...],
+        var: float | np.ndarray | torch.Tensor,
+        mask: torch.Tensor | np.ndarray = None,
+        **kwargs,
+    ):
+        self.hypothesis.construct_hypothesis(
+            si_model=self.si_model, X=input, var=var, mask=mask, **kwargs
+        )
         self.si_calculator = self.hypothesis.si_calculator
         self.output = self.hypothesis.output
         self.score_map = self.hypothesis.score_map
@@ -179,24 +220,29 @@ class PresetSIModel(SIModel):
         | list[torch.Tensor | np.ndarray]
         | tuple[torch.Tensor | np.ndarray, ...],
         var: float | np.ndarray | torch.Tensor,
+        mask: torch.Tensor | np.ndarray = None,
         **kwargs,
     ) -> InferenceResult:
-        """
+        """Inference process for Selective Inference
+
         Parameters
         ----------
         input : torch.Tensor | np.ndarray | list[torch.Tensor | np.ndarray] | tuple[torch.Tensor | np.ndarray, ...]
             Input of NN
         var : float | np.ndarray | torch.Tensor
-            Covariance matrix of the noise of input
-            Treated as the diagonal of the covariance matrix, representing independent variances for each dimension.
+            Covariance matrix of the noise of input.
+        mask : torch.Tensor | numpy.ndarray | None, optional
+            The mask can be used to specify the region that may be used for the hypothesis test.
+            The mask to apply the logical AND operator to the `roi` and `non_roi`.
+            Defaults to None.
         **kwargs : Any
 
         Returns
         -------
         InferenceResult
-            Result of Selective Inference
+            The result of the inference.
         """
-        self.construct_hypothesis(input, var)
+        self.construct_hypothesis(input, var, mask)
         result = self.si_calculator.inference(
             algorithm=self.algorithm,
             model_selector=self.model_selector,
@@ -214,16 +260,16 @@ def load(
     hypothesis: PresetHypothesis,
     seed: float = None,
     memoization: bool = True,
-) -> SIModel:
+) -> PresetSIModel:
     """Load onnx model and hypothesis setting to SIModel
 
     Parameters
     ----------
     model : onnx.ModelProto
         The onnx model instance.
-    hypothesis : Hypothesis | PresetHypothesis
+    hypothesis : PresetHypothesis
         The hypothesis setting.
-        You can choose an instance of the class "Hypothesis" or class "PresetHypothesis" for preset hypothesis setting.
+        You can choose an instance of the class "PresetHypothesis" for preset hypothesis setting.
     seed : float, optional
         The seed of random number generator.
         If the onnx model contains RandomNormalLike layers, the seed is used to generate the same random numbers.
@@ -234,13 +280,13 @@ def load(
 
     Returns
     -------
-    si_model : SIModel
-        The instance of SIModel or SI
+    si_model : PresetSIModel
+        The Selective Inference model
 
     Raises
     ------
     ValueError
-        If hypothesis is not an instance of Hypothesis or PresetHypothesis
+        If hypothesis is not an instance of PresetHypothesis
     """
 
     if isinstance(hypothesis, PresetHypothesis):
