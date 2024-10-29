@@ -1,6 +1,6 @@
 [project]
 name = "si4onnx"
-version = "0.1.1"
+version = "0.1.2"
 description = "A Package for Selective Inference in Deep Neural Networks"
 requires-python = ">=3.10"
 dependencies = [
