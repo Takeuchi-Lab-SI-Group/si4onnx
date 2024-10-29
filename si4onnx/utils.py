@@ -42,7 +42,7 @@ def to_numpy(
     if isinstance(input, torch.Tensor):
         return input.detach().numpy()
     elif isinstance(input, (list, tuple)):
-        return [[x.numpy() if isinstance(x, torch.Tensor) else x for x in input]]
+        return [x.numpy() if isinstance(x, torch.Tensor) else x for x in input]
     elif input is None:
         return None
 
