@@ -57,7 +57,7 @@ class InferenceResult(SelectiveInferenceResult):
     non_roi: np.ndarray | None = None
 
 
-class SIModel(ABC):
+class SelectiveInferenceModel(ABC):
     def __init__(self):
         self.si_calculator: SelectiveInferenceNorm | SelectiveInferenceChi = None
 
@@ -153,7 +153,7 @@ class SIModel(ABC):
         return result
 
 
-class PresetSIModel(SIModel):
+class PresetSelectiveInferenceModel(SelectiveInferenceModel):
     def __init__(
         self,
         model: ModelProto,
@@ -162,7 +162,7 @@ class PresetSIModel(SIModel):
         memoization: bool = True,
         **kwargs,
     ):
-        """SIModel class for Preset Hypothesis
+        """SelectiveInferenceModel class for Preset Hypothesis
 
         Parameters
         ----------
@@ -282,8 +282,8 @@ def load(
     hypothesis: PresetHypothesis,
     seed: float = None,
     memoization: bool = True,
-) -> PresetSIModel:
-    """Load onnx model and hypothesis setting to SIModel
+) -> PresetSelectiveInferenceModel:
+    """Load onnx model and hypothesis setting to SelectiveInferenceModel
 
     Parameters
     ----------
@@ -302,7 +302,7 @@ def load(
 
     Returns
     -------
-    si_model : PresetSIModel
+    si_model : PresetSelectiveInferenceModel
         The Selective Inference model
 
     Raises
@@ -312,7 +312,7 @@ def load(
     """
 
     if isinstance(hypothesis, PresetHypothesis):
-        si_model = PresetSIModel(model, hypothesis, seed, memoization)
+        si_model = PresetSelectiveInferenceModel(model, hypothesis, seed, memoization)
     else:
         raise ValueError("hypothesis should be an instance of PresetHypothesis")
     return si_model

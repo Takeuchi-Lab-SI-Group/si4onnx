@@ -1,4 +1,4 @@
-from .si import SIModel, load
+from .si import SelectiveInferenceModel, load
 from .hypothesis import (
     Hypothesis,
     BackMeanDiff,
@@ -13,11 +13,12 @@ from .operators import (
     GaussianFilter,
 )
 from .nn import NN
-from .utils import truncated_interval, thresholding
+from .operators import Operator
 from .data import SyntheticDataset
+from .utils import truncated_interval, thresholding
 
 __all__ = [
-    "SIModel",
+    "SelectiveInferenceModel",
     "load",
     "Hypothesis",
     "BackMeanDiff",
@@ -29,7 +30,8 @@ __all__ = [
     "AverageFilter",
     "GaussianFilter",
     "NN",
+    "Operator",
+    "SyntheticDataset",
     "truncated_interval",
     "thresholding",
-    "SyntheticDataset",
 ]
