@@ -4,15 +4,16 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from sicore import SelectiveInferenceNorm
-from .utils import to_torch_tensor, thresholding
 from .nn import NN
+from .operators import Operator
+from .utils import to_torch_tensor, thresholding
 
 
 def check_use_sigmoid(si_model, selected_node_name):
     """
     Parameters
     ----------
-    si_model : NN
+    si_model : si4onnx.nn.NN
         The model for the selective inference.
     selected_node_name : str
         The name of the selected node.
@@ -81,16 +82,14 @@ class PresetHypothesis(Hypothesis):
         threshold: float,
         i_idx: int = 0,
         o_idx: int = 0,
-        post_process: nn.Module | list[nn.Module] = [],
+        post_process: Operator | list[Operator] = [],
         use_norm: bool = False,
         **kwargs,
     ):
-        """Base class for preset hypotheses in selective inference.
+        """This class serves as a foundation for implementing various preset hypotheses testing settings.
 
-        This class serves as a foundation for implementing various preset hypotheses
-        testing settings. It provides common functionality for constructing regions
-        of interest (ROI) from model outputs and handling both single and multiple
-        input/output scenarios.
+        This class provides common functionality for constructing regions of interest (ROI)
+        from model outputs and handling both single and multiple input/output scenarios.
 
         Attributes
         ----------
@@ -100,14 +99,10 @@ class PresetHypothesis(Hypothesis):
             Selected input index.
         o_idx : int
             Selected output index.
-        post_process : list[nn.Module]
+        post_process : Operator | list[Operator]
             List of post-processing operations.
         use_norm : bool
             Flag for score map normalization.
-        use_sigmoid : bool
-            Flag indicating if sigmoid is used in output.
-        mask : torch.Tensor or None
-            Optional mask for ROI calculation.
         """
         super().__init__(**kwargs)
         self.thrshold = torch.tensor(threshold).double()
@@ -190,10 +185,10 @@ class PresetHypothesis(Hypothesis):
 
         # Apply mask
         if self.mask is not None:
-            roi = roi.logical_and(self.mask).int().squeeze()
-        self.roi = roi
+            roi = roi.logical_and(~self.mask).int().squeeze()
+        roi_vector = roi.reshape(-1).int()
 
-        roi_vector = roi.flatten().int()
+        self.roi = roi
         self.roi_vector = roi_vector
 
         return input_x, roi, roi_vector
@@ -272,18 +267,37 @@ class PresetHypothesis(Hypothesis):
 
         # Apply mask
         if self.mask is not None:
-            roi_vector = roi_vector.logical_and(self.mask.reshape(-1)).int()
+            roi_vector = roi_vector.logical_and(~self.mask.reshape(-1)).int()
 
         return roi_vector, [l, u]
 
 
 class BackMeanDiff(PresetHypothesis):
+    """Hypothesis for the mean difference between the ROI and the background region in the input data.
+
+    Examples
+    --------
+    >>> import onnx
+    >>> from si4onnx.hypothesis import BackMeanDiff
+    >>> from si4onnx.operators import InputDiff, Abs
+    >>> from si4onnx.utils import load
+    >>> model = load_onnx("model.onnx")
+    >>> si_model = si4onnx.load(
+    ...     model=onnx.load("model.onnx"),
+    ...     hypothesis=BackMeanDiff(
+    ...         threshold=0.5,
+    ...         post_process=[InputDiff(), Abs()]
+    ...     )
+    ... )
+    ... print(si_model.inference(input_image, var=1.0).p_value)
+    """
+
     def __init__(
         self,
         threshold: float,
         i_idx: int = 0,
         o_idx: int = 0,
-        post_process: nn.Module | list[nn.Module] = [],
+        post_process: Operator | list[Operator] = [],
         use_norm: bool = False,
         **kwargs,
     ):
@@ -311,7 +325,7 @@ class BackMeanDiff(PresetHypothesis):
         si_model: NN,
         X: torch.Tensor | list[torch.Tensor] | tuple[torch.Tensor],
         var: float | torch.Tensor | np.ndarray,
-        mask: torch.Tensor | np.ndarray | None = None,
+        mask: torch.Tensor | None = None,
     ):
         """
         Parameters
@@ -323,8 +337,8 @@ class BackMeanDiff(PresetHypothesis):
         var : float | torch.Tensor | np.ndarray
             The variance of the noise.
         mask : torch.Tensor | numpy.ndarray | None, optional
-            The mask can be used to specify the region that may be used for the hypothesis test.
-            The mask to apply the logical AND operator to the `roi` and `non_roi`.
+            A mask that specifies the regions that are not selected as ROI and oter region,
+            that is to say, a mask specify regions that will not be used for the test statistic.
             Defaults to None.
         """
         self.mask = mask
@@ -332,7 +346,7 @@ class BackMeanDiff(PresetHypothesis):
 
         non_roi = 1 - roi
         if self.mask is not None:
-            non_roi = non_roi.logical_and(self.mask).int()
+            non_roi = non_roi.logical_and(~self.mask).int()
         self.non_roi = non_roi
 
         non_roi_vector = non_roi.reshape(-1).int()
@@ -389,6 +403,25 @@ class BackMeanDiff(PresetHypothesis):
 
 
 class NeighborMeanDiff(PresetHypothesis):
+    """Hypothesis for the mean difference between the ROI and the neighborhood region in the input data.
+
+    Examples
+    --------
+    >>> import onnx
+    >>> from si4onnx.hypothesis import NeigborMeanDiff
+    >>> from si4onnx.operators import InputDiff, Abs
+    >>> from si4onnx.utils import load
+    >>> model = load_onnx("model.onnx")
+    >>> si_model = si4onnx.load(
+    ...     model=onnx.load("model.onnx"),
+    ...     hypothesis=NeigborMeanDiff(
+    ...         threshold=0.5,
+    ...         post_process=[InputDiff(), Abs()]
+    ...     )
+    ... )
+    ... print(si_model.inference(input_image, var=1.0).p_value)
+    """
+
     def __init__(
         self,
         threshold: float,
@@ -430,7 +463,7 @@ class NeighborMeanDiff(PresetHypothesis):
         si_model: NN,
         X: torch.Tensor | list[torch.Tensor] | tuple[torch.Tensor],
         var: float | torch.Tensor | np.ndarray,
-        mask: torch.Tensor | np.ndarray | None = None,
+        mask: torch.Tensor | None = None,
     ):
         """
         Parameters
@@ -442,8 +475,8 @@ class NeighborMeanDiff(PresetHypothesis):
         var: float | torch.Tensor | np.ndarray
             The variance of the noise.
         mask : torch.Tensor | numpy.ndarray | None, optional
-            The mask can be used to specify the region that may be used for the hypothesis test.
-            The mask to apply the logical AND operator to the `roi` and `non_roi`.
+            A mask that specifies the regions that are not selected as ROI and oter region,
+            that is to say, a mask specify regions that will not be used for the test statistic.
             Defaults to None.
         """
         self.mask = mask
@@ -471,7 +504,7 @@ class NeighborMeanDiff(PresetHypothesis):
         neighborhood_region = neighborhood_region.squeeze()
         neighborhood_region = neighborhood_region.logical_xor(roi).int()
         if self.mask is not None:
-            neighborhood_region = neighborhood_region.logical_and(self.mask).int()
+            neighborhood_region = neighborhood_region.logical_and(~self.mask).int()
 
         self.non_roi = neighborhood_region
 
@@ -528,6 +561,25 @@ class NeighborMeanDiff(PresetHypothesis):
 
 
 class ReferenceMeanDiff(PresetHypothesis):
+    """Hypothesis for the mean difference between the ROI and the neighborhood region in the input data.
+
+    Examples
+    --------
+    >>> import onnx
+    >>> from si4onnx.hypothesis import ReferenceMeanDiff
+    >>> from si4onnx.operators import InputDiff, Abs
+    >>> from si4onnx.utils import load
+    >>> model = load_onnx("model.onnx")
+    >>> si_model = si4onnx.load(
+    ...     model=onnx.load("model.onnx"),
+    ...     hypothesis=ReferenceMeanDiff(
+    ...         threshold=0.5,
+    ...         post_process=[InputDiff(), Abs()]
+    ...     )
+    ... )
+    ... print(si_model.inference(input=(input_image, reference_image), var=1.0).p_value)
+    """
+
     def __init__(
         self,
         threshold: float,
@@ -564,7 +616,7 @@ class ReferenceMeanDiff(PresetHypothesis):
         si_model: NN,
         X: tuple,
         var: float | torch.Tensor | np.ndarray,
-        mask: torch.Tensor | np.ndarray | None = None,
+        mask: torch.Tensor | None = None,
     ):
         """
         Parameters
@@ -577,8 +629,8 @@ class ReferenceMeanDiff(PresetHypothesis):
         var: float | torch.Tensor | numpy.ndarray
             The variance of the noise.
         mask : torch.Tensor | numpy.ndarray | None, optional
-            The mask can be used to specify the region that may be used for the hypothesis test.
-            The mask to apply the logical AND operator to the `roi` and `non_roi`.
+            A mask that specifies the regions that are not selected as ROI and oter region,
+            that is to say, a mask specify regions that will not be used for the test statistic.
             Defaults to None.
         """
         if not isinstance(X, tuple) or len(X) != 2:

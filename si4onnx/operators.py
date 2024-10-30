@@ -2,9 +2,24 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from .utils import truncated_interval
+from abc import ABC, abstractmethod
 
 
-class InputDiff:
+class Operator(ABC):
+    def __init__(self, *args, **kwargs):
+        """The class is the base class for all operators."""
+        super().__init__()
+
+    @abstractmethod
+    def forward(self, x, **kwargs):
+        pass
+
+    @abstractmethod
+    def forward_si(self, x, a, b, l, u, z, **kwargs):
+        pass
+
+
+class InputDiff(Operator):
     def __init__(self, *args, **kwargs):
         """
         The class computes the difference with the input that is selected 'o_idx'.
@@ -56,7 +71,7 @@ class InputDiff:
         return x, a, b, l, u
 
 
-class Neg:
+class Neg(Operator):
     def __init__(self, *args, **kwargs):
         """
         The class computes the negative value of the input.
@@ -98,7 +113,7 @@ class Neg:
         return torch.neg(x), torch.neg(a), torch.neg(b), l, u
 
 
-class Abs:
+class Abs(Operator):
     def __init__(self, *args, **kwargs):
         """The class computes the absolute value of the input and the interval of the truncated interval."""
         super().__init__()
@@ -165,7 +180,7 @@ class Abs:
         return output_x, output_a, output_b, l, u
 
 
-class AverageFilter:
+class AverageFilter(Operator):
     def __init__(self, kernel_size: int = 3):
         super().__init__()
         self.kernel_size = kernel_size
@@ -222,7 +237,7 @@ class AverageFilter:
         return output_x, output_a, output_b, l, u
 
 
-class GaussianFilter:
+class GaussianFilter(Operator):
     def __init__(self, kernel_size: int = 3, sigma: float = 1.0):
         """Apply a Gaussian filter to the input tensor.
 

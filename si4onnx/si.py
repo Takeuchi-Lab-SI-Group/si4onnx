@@ -11,7 +11,7 @@ from sicore import (
 )
 
 from . import nn
-from .utils import to_numpy
+from .utils import to_numpy, to_torch_tensor
 from .hypothesis import PresetHypothesis
 
 
@@ -192,7 +192,7 @@ class PresetSIModel(SIModel):
         | list[torch.Tensor | np.ndarray]
         | tuple[torch.Tensor | np.ndarray, ...],
         var: float | np.ndarray | torch.Tensor,
-        mask: torch.Tensor | np.ndarray = None,
+        mask: torch.Tensor | None = None,
         **kwargs,
     ):
         self.hypothesis.construct_hypothesis(
@@ -220,7 +220,7 @@ class PresetSIModel(SIModel):
         | list[torch.Tensor | np.ndarray]
         | tuple[torch.Tensor | np.ndarray, ...],
         var: float | np.ndarray | torch.Tensor,
-        mask: torch.Tensor | np.ndarray = None,
+        mask: torch.Tensor | np.ndarray | None = None,
         **kwargs,
     ) -> InferenceResult:
         """Inference process for Selective Inference
@@ -235,13 +235,35 @@ class PresetSIModel(SIModel):
             The mask can be used to specify the region that may be used for the hypothesis test.
             The mask to apply the logical AND operator to the `roi` and `non_roi`.
             Defaults to None.
-        **kwargs : Any
+        **kwargs
+            Arbitrary keyword arguments.
+
+        Other Parameters
+        -----------------
+        inference_mode : Literal["parametric", "exhaustive", "over_conditioning"], optional
+                Must be one of 'parametric', 'exhaustive',or 'over_conditioning'.
+                Defaults to 'parametric'.
+        max_iter :int, optional
+                Maximum number of iterations. Defaults to 100_000.
+        n_jobs : int, optional
+            Number of jobs to run in parallel. Defaults to 1.
+        step : float, optional
+            Step size for the search strategy. Defaults to 1e-6.
+        significance_level : float, optional
+            Significance level only for the termination criterion 'decision'.
+            Defaults to 0.05.
+        precision : float, optional
+            Precision only for the termination criterion 'precision'.
+            Defaults to 0.001.
 
         Returns
         -------
         InferenceResult
             The result of the inference.
         """
+        if mask is not None:
+            mask = to_torch_tensor(mask).bool()
+        input = to_torch_tensor(input)
         self.construct_hypothesis(input, var, mask)
         result = self.si_calculator.inference(
             algorithm=self.algorithm,

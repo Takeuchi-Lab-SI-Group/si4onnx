@@ -19,6 +19,12 @@ def to_torch_tensor(input: torch.Tensor | np.ndarray):
         return input.detach().double()
     elif isinstance(input, np.ndarray):
         return torch.from_numpy(input)
+    elif isinstance(input, tuple):
+        return tuple(to_torch_tensor(x) for x in input)
+    elif isinstance(input, list):
+        return [to_torch_tensor(x) for x in input]
+    elif input is None:
+        return None
 
 
 def to_numpy(
