@@ -281,7 +281,7 @@ class BackMeanDiff(PresetHypothesis):
     >>> from si4onnx.hypothesis import BackMeanDiff
     >>> from si4onnx.operators import InputDiff, Abs
     >>> from si4onnx.utils import load
-    >>> model = load_onnx("model.onnx")
+    >>> model = onnx.("model.onnx")
     >>> si_model = si4onnx.load(
     ...     model=onnx.load("model.onnx"),
     ...     hypothesis=BackMeanDiff(
@@ -315,6 +315,8 @@ class BackMeanDiff(PresetHypothesis):
             The index of the output to use for the calculation of the `roi`.
             This option is for models with multiple outputs.
             Defaults to 0.
+        post_process : Operator | list[Operator]
+            List of post-processing operations.
         use_norm : bool, optional
             Whether to apply min-max normalization to the `score_map`.
         """
@@ -336,7 +338,7 @@ class BackMeanDiff(PresetHypothesis):
             The input data.
         var : float | torch.Tensor | np.ndarray
             The variance of the noise.
-        mask : torch.Tensor | numpy.ndarray | None, optional
+        mask : torch.Tensor | n.ndarray | None, optional
             A mask that specifies the regions that are not selected as ROI and oter region,
             that is to say, a mask specify regions that will not be used for the test statistic.
             Defaults to None.
@@ -411,7 +413,7 @@ class NeighborMeanDiff(PresetHypothesis):
     >>> from si4onnx.hypothesis import NeigborMeanDiff
     >>> from si4onnx.operators import InputDiff, Abs
     >>> from si4onnx.utils import load
-    >>> model = load_onnx("model.onnx")
+    >>> model = onnx.load("model.onnx")
     >>> si_model = si4onnx.load(
     ...     model=onnx.load("model.onnx"),
     ...     hypothesis=NeigborMeanDiff(
@@ -452,6 +454,8 @@ class NeighborMeanDiff(PresetHypothesis):
             The index of the output to use for the calculation of the `roi`.
             This option is for models with multiple outputs.
             Defaults to 0.
+        post_process : Operator | list[Operator]
+            List of post-processing operations.
         use_norm : bool, optional
             Whether to apply min-max normalization to the `score_map`.
         """
@@ -474,7 +478,7 @@ class NeighborMeanDiff(PresetHypothesis):
             The input data.
         var: float | torch.Tensor | np.ndarray
             The variance of the noise.
-        mask : torch.Tensor | numpy.ndarray | None, optional
+        mask : torch.Tensor | n.ndarray | None, optional
             A mask that specifies the regions that are not selected as ROI and oter region,
             that is to say, a mask specify regions that will not be used for the test statistic.
             Defaults to None.
@@ -569,7 +573,7 @@ class ReferenceMeanDiff(PresetHypothesis):
     >>> from si4onnx.hypothesis import ReferenceMeanDiff
     >>> from si4onnx.operators import InputDiff, Abs
     >>> from si4onnx.utils import load
-    >>> model = load_onnx("model.onnx")
+    >>> model = onnx.load("model.onnx")
     >>> si_model = si4onnx.load(
     ...     model=onnx.load("model.onnx"),
     ...     hypothesis=ReferenceMeanDiff(
@@ -605,6 +609,8 @@ class ReferenceMeanDiff(PresetHypothesis):
             The index of the output to use for the calculation of the `roi`.
             This option is for models with multiple outputs.
             Defaults to 0.
+        post_process : Operator | list[Operator]
+            List of post-processing operations.
         use_norm : bool, optional
             Whether to apply min-max normalization to the `score_map`.
         """
@@ -626,9 +632,9 @@ class ReferenceMeanDiff(PresetHypothesis):
         X : tuple
             The tuple of the input data and the reference data.
             (input_data, reference_data)
-        var: float | torch.Tensor | numpy.ndarray
+        var: float | torch.Tensor | n.ndarray
             The variance of the noise.
-        mask : torch.Tensor | numpy.ndarray | None, optional
+        mask : torch.Tensor | n.ndarray | None, optional
             A mask that specifies the regions that are not selected as ROI and oter region,
             that is to say, a mask specify regions that will not be used for the test statistic.
             Defaults to None.
