@@ -34,6 +34,7 @@ from .layers import (
     Equal,
     Greater,
     Squeeze,
+    Unsqueeze,
     Constant,
     RandomNormalLike,
 )
@@ -112,6 +113,7 @@ class NN(torch.nn.Module):
             "Equal": Equal,
             "Greater": Greater,
             "Squeeze": Squeeze,
+            "Unsqueeze": Unsqueeze,
         }
         self.non_input_layers = {
             "Constant": Constant,
@@ -325,7 +327,7 @@ class NN(torch.nn.Module):
                     a, b, l, u = layer.forward_si(*node_output_si[node.input[0]], z)
                 elif op_type in self.multi_input_layers:
                     layer = self.multi_input_layers[op_type](inputs, node, node_output)
-                    a, b, l, u = layer.forward_si(node, node_output, node_output_si)
+                    a, b, l, u = layer.forward_si(node, node_output, node_output_si, z)
                 elif op_type in self.non_input_layers:
                     layer = self.non_input_layers[op_type](inputs, node)
                     a, b, l, u = layer.forward_si()
