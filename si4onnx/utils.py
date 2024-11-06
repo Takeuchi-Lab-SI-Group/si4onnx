@@ -63,6 +63,7 @@ def truncated_interval(a: torch.Tensor, b: torch.Tensor):
         a tensor
     b : torch.Tensor
         b tensor
+    
     Returns
     -------
     float
@@ -71,15 +72,26 @@ def truncated_interval(a: torch.Tensor, b: torch.Tensor):
         upper bound of the truncated interval
     """
     INF = torch.tensor([torch.inf]).double()
-    plus_index = torch.greater(b, 0)
-    minus_index = torch.less(b, 0)
+
+    b_plus_index = torch.greater(b, 0)
+    b_minus_index = torch.less(b, 0)
+
+    a_zero_index = a == 0
+    a_non_zero_index = ~a_zero_index
+
+
+    l = torch.where(torch.any(b_plus_index & a_zero_index), 0.0, -INF.item()).item()
+    u = torch.where(torch.any(b_minus_index & a_zero_index), 0.0, INF.item()).item()
 
     divided = torch.div(torch.neg(a), b)
 
-    lowers = divided.masked_select(plus_index)
+    b_plus_index = b_plus_index & a_non_zero_index
+    b_minus_index = b_minus_index & a_non_zero_index
+    
+    lowers = divided.masked_select(b_plus_index)
     l = torch.max(torch.cat([lowers, -INF]))
 
-    uppers = divided.masked_select(minus_index)
+    uppers = divided.masked_select(b_minus_index)
     u = torch.min(torch.cat([uppers, INF]))
 
     return l, u
