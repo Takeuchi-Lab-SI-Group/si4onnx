@@ -820,7 +820,7 @@ class Reshape(Layer):
         output = torch.reshape(self.input, self.shape)
         return output
 
-    def forward_si(self, node, node_output, node_output_si):
+    def forward_si(self, node, node_output, node_output_si, z):
         a = node_output_si[node.input[0]][0]
         b = node_output_si[node.input[0]][1]
         l = node_output_si[node.input[0]][2]
@@ -896,7 +896,7 @@ class Resize(Layer):
         )
         return output
 
-    def forward_si(self, node, node_output, node_output_si):
+    def forward_si(self, node, node_output, node_output_si, z):
         a = node_output_si[node.input[0]][0]
         b = node_output_si[node.input[0]][1]
         l = node_output_si[node.input[0]][2]
@@ -943,7 +943,7 @@ class Concat(Layer):
         output = torch.cat(self.inputs, dim=self.axis)
         return output
 
-    def forward_si(self, node, node_output, node_output_si):
+    def forward_si(self, node, node_output, node_output_si, z):
         a = [
             torch.as_tensor(node_output_si[input_name][0]) for input_name in node.input
         ]
@@ -975,7 +975,7 @@ class Add(Layer):
         output = torch.add(self.inputs[0], self.inputs[1])
         return output
 
-    def forward_si(self, node, node_output, node_output_si):
+    def forward_si(self, node, node_output, node_output_si, z):
         a = [(node_output_si[input_name][0]) for input_name in node.input]
         output_a = torch.add(a[0], a[1])
 
@@ -1008,7 +1008,7 @@ class Sub(Layer):
         output = torch.sub(self.inputs[0], self.inputs[1])
         return output
 
-    def forward_si(self, node, node_output, node_output_si):
+    def forward_si(self, node, node_output, node_output_si, z):
         a = [
             (
                 node_output_si[input_name][0]
@@ -1058,7 +1058,7 @@ class Split(Layer):
             )
         return output
 
-    def forward_si(self, node, node_output, node_output_si):
+    def forward_si(self, node, node_output, node_output_si, z):
         a = node_output_si[node.input[0]][0]
         b = node_output_si[node.input[0]][1]
 
@@ -1112,7 +1112,7 @@ class BatchNormalization(Layer):
             ) * self.scale + self.B
         return output
 
-    def forward_si(self, node, node_output, node_output_si):
+    def forward_si(self, node, node_output, node_output_si, z):
         if self.training_mode:
             raise NotImplementedError(
                 "Training mode is not supported. Please save the model in evaluation mode."
@@ -1146,7 +1146,7 @@ class Mul(Layer):
         output = torch.mul(self.A, self.B)
         return output
 
-    def forward_si(self, node, node_output, node_output_si):
+    def forward_si(self, node, node_output, node_output_si, z):
         A_a = node_output_si[node.input[0]][0]
         A_b = node_output_si[node.input[0]][1]
         A_l = node_output_si[node.input[0]][2]
@@ -1181,7 +1181,7 @@ class MatMul(Layer):
         output = torch.matmul(self.A, self.B)
         return output
 
-    def forward_si(self, node, node_output, node_output_si):
+    def forward_si(self, node, node_output, node_output_si, z):
         A_a = node_output_si[node.input[0]][0]
         A_b = node_output_si[node.input[0]][1]
         A_l = node_output_si[node.input[0]][2]
@@ -1216,7 +1216,7 @@ class Div(Layer):
         output = torch.div(self.A, self.B)
         return output
 
-    def forward_si(self, node, node_output, node_output_si):
+    def forward_si(self, node, node_output, node_output_si, z):
         A_a = node_output_si[node.input[0]][0]
         A_b = node_output_si[node.input[0]][1]
         A_l = node_output_si[node.input[0]][2]
@@ -1261,7 +1261,7 @@ class ReduceSum(Layer):
         output = torch.sum(self.input, dim=self.axes, keepdim=self.keepdims)
         return output
 
-    def forward_si(self, node, node_output, node_output_si):
+    def forward_si(self, node, node_output, node_output_si, z):
         a = node_output_si[node.input[0]][0]
         b = node_output_si[node.input[0]][1]
         l = node_output_si[node.input[0]][2]
@@ -1288,7 +1288,7 @@ class Equal(Layer):
         output = torch.eq(self.A, self.B)
         return output
 
-    def forward_si(self, node, node_output, node_output_si):
+    def forward_si(self, node, node_output, node_output_si, z):
         A_a = node_output_si[node.input[0]][0]
         A_b = node_output_si[node.input[0]][1]
         A_l = node_output_si[node.input[0]][2]
@@ -1323,7 +1323,7 @@ class Greater(Layer):
         output = torch.gt(self.A, self.B)
         return output
 
-    def forward_si(self, node, node_output, node_output_si):
+    def forward_si(self, node, node_output, node_output_si, z):
         A_a = node_output_si[node.input[0]][0]
         A_b = node_output_si[node.input[0]][1]
         A_l = node_output_si[node.input[0]][2]
@@ -1352,13 +1352,16 @@ class Squeeze(Layer):
     def __init__(self, inputs, node, node_output):
         super().__init__(inputs, node)
         self.input = node_output[node.input[0]]
-        self.axes = node_output[node.input[1]].tolist()
+        if len(node.input) > 1:
+            self.axes = node_output[node.input[1]].tolist()
+        else:
+            self.axes = int(self.attribute["axes"].ints[0])
 
     def forward(self):
         output = torch.squeeze(self.input, dim=self.axes)
         return output
 
-    def forward_si(self, node, node_output, node_output_si):
+    def forward_si(self, node, node_output, node_output_si, z):
         a = node_output_si[node.input[0]][0]
         b = node_output_si[node.input[0]][1]
         l = node_output_si[node.input[0]][2]
@@ -1366,6 +1369,36 @@ class Squeeze(Layer):
         output_a = torch.squeeze(a, dim=self.axes)
         if b is not None:
             output_b = torch.squeeze(b, dim=self.axes)
+            output_l = l
+            output_u = u
+        else:
+            output_b = None
+            output_l = -INF
+            output_u = INF
+        return output_a, output_b, output_l, output_u
+
+
+class Unsqueeze(Layer):
+    def __init__(self, inputs, node, node_output):
+        super().__init__(inputs, node)
+        self.data = node_output[node.input[0]]
+        if len(node.input) > 1:
+            self.axes = int(self.attribute["axes"].ints[0])
+        else:
+            self.axes = int(self.attribute["axes"].ints[0])
+
+    def forward(self):
+        output = torch.unsqueeze(self.data, dim=self.axes)
+        return output
+
+    def forward_si(self, node, node_output, node_output_si, z):
+        a = node_output_si[node.input[0]][0]
+        b = node_output_si[node.input[0]][1]
+        l = node_output_si[node.input[0]][2]
+        u = node_output_si[node.input[0]][3]
+        output_a = torch.unsqueeze(a, dim=self.axes)
+        if b is not None:
+            output_b = torch.unsqueeze(b, dim=self.axes)
             output_l = l
             output_u = u
         else:
