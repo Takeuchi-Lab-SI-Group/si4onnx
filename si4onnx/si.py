@@ -231,7 +231,7 @@ class PresetSelectiveInferenceModel(SelectiveInferenceModel):
             Input of NN
         var : float | np.ndarray | torch.Tensor
             Covariance matrix of the noise of input.
-        mask : torch.Tensor | numpy.ndarray | None, optional
+        mask : torch.Tensor | np.ndarray | None, optional
             The mask can be used to specify the region that may be used for the hypothesis test.
             The mask to apply the logical AND operator to the `roi` and `non_roi`.
             Defaults to None.
