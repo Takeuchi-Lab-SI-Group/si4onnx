@@ -185,7 +185,7 @@ class PresetHypothesis(Hypothesis):
 
         # Apply mask
         if self.mask is not None:
-            roi = roi.logical_and(~self.mask).int().squeeze()
+            roi = roi.logical_and(self.mask).int().squeeze()
         roi_vector = roi.reshape(-1).int()
 
         self.roi = roi
@@ -267,7 +267,7 @@ class PresetHypothesis(Hypothesis):
 
         # Apply mask
         if self.mask is not None:
-            roi_vector = roi_vector.logical_and(~self.mask.reshape(-1)).int()
+            roi_vector = roi_vector.logical_and(self.mask.reshape(-1)).int()
 
         return roi_vector, [l, u]
 
@@ -348,7 +348,7 @@ class BackMeanDiff(PresetHypothesis):
 
         non_roi = 1 - roi
         if self.mask is not None:
-            non_roi = non_roi.logical_and(~self.mask).int()
+            non_roi = non_roi.logical_and(self.mask).int()
         self.non_roi = non_roi
 
         non_roi_vector = non_roi.reshape(-1).int()
@@ -508,7 +508,7 @@ class NeighborMeanDiff(PresetHypothesis):
         neighborhood_region = neighborhood_region.squeeze()
         neighborhood_region = neighborhood_region.logical_xor(roi).int()
         if self.mask is not None:
-            neighborhood_region = neighborhood_region.logical_and(~self.mask).int()
+            neighborhood_region = neighborhood_region.logical_and(self.mask).int()
 
         self.non_roi = neighborhood_region
 
