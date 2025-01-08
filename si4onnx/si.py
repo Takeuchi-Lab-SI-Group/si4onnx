@@ -17,44 +17,30 @@ from .hypothesis import PresetHypothesis
 
 @dataclass
 class InferenceResult(SelectiveInferenceResult):
-    """A class extending SelectiveInferenceResult with ROI and output information.
+    """
+    A class extending :class:`SelectiveInferenceResult` with ROI and output information.
+
+    For the attributes inherited from :class:`SelectiveInferenceResult`, please see its documentation.
 
     Attributes
     ----------
-    roi : np.ndarray
-        Region of interest for the inference.
     output : np.ndarray
         Output of the inference process.
     score_map : np.ndarray
         Score map obtained from the inference process.
-    non_roi : np.ndarray
+    roi : np.ndarray
+        Region of interest for the inference.
+    non_roi : np.ndarray | None
         Region outside of the ROI.
-    stat : float
-        Test statistic value.
-    p_value : float
-        Selective p-value.
-    inf_p : float
-        Lower bound of selective p-value.
-    sup_p : float
-        Upper bound of selective p-value.
-    searched_intervals : list[list[float]]
-        Intervals where the search was performed.
-    truncated_intervals : list[list[float]]
-        Intervals where the selected model is obtained.
-    search_count : int
-        Number of times the search was performed.
-    detect_count : int
-        Number of times the selected model was obtained.
-    null_rv : rv_continuous
-        Null distribution of the unconditional test statistic.
-    alternative : Literal["two-sided", "less", "greater"]
-        Type of the alternative hypothesis.
     """
-
     output: np.ndarray
+    """Output of the inference process."""
     score_map: np.ndarray
+    """Score map obtained from the inference process."""
     roi: np.ndarray
+    """Region of interest for the inference."""
     non_roi: np.ndarray | None = None
+    """Region outside of the ROI."""
 
 
 class SelectiveInferenceModel(ABC):

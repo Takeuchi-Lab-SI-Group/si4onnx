@@ -41,16 +41,8 @@ from .layers import (
 
 
 class NN(torch.nn.Module):
-    """Deep learning model class for Selective Inference.
-
-    Methods
-    -------
-    __init__(model, seed=None, memoization=True)
-        Initialize the class.
-    forward(input)
-        Forward pass of the model.
-    forward_si(input, a, b, l, u, z)
-        Forward pass with computing the output and the trancated interval.
+    """
+    Deep learning model class for Selective Inference.
     """
 
     def __init__(

@@ -122,7 +122,7 @@ class Abs(Operator):
         return torch.abs(x)
 
     def forward_si(self, x, a, b, l, u, z):
-        """Compute the interval [l, u] = {|a_i + b_i * z| > 0}
+        """Compute the interval.
 
         Parameters
         ----------
@@ -152,7 +152,6 @@ class Abs(Operator):
             upper bound of the truncated interval
         """
 
-        # Compute the interval |a_i + b_i * z| > 0 -> a_i + b_i * z < 0
         negative_index = x < 0
         tTa = a
         tTb = b
@@ -163,7 +162,6 @@ class Abs(Operator):
         u = torch.min(u, u_negative)
         assert l <= z <= u
 
-        # Compute the interval |a_i + b_i * z| > 0 -> a_i + b_i * z_i > 0
         positive_index = x > 0
         tTa = a
         tTb = b
