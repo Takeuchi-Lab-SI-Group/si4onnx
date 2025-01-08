@@ -7,7 +7,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>si4onnx documentation &mdash; si4onnx 1.0.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
 
   
@@ -18,7 +18,8 @@
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" /> 
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="si4onnx" href="modules.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -40,11 +41,11 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <!-- Local TOC -->
-              <div class="local-toc"><ul>
-<li><a class="reference internal" href="#">si4onnx documentation</a></li>
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">si4onnx</a></li>
 </ul>
-</div>
+
         </div>
       </div>
     </nav>
@@ -75,13 +76,398 @@
 <a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html">reStructuredText</a>
 documentation for details.</p>
 <div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">si4onnx</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="si4onnx.html">si4onnx package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="si4onnx.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="si4onnx.html#module-si4onnx.data">si4onnx.data module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="si4onnx.html#si4onnx.data.SyntheticDataset"><code class="docutils literal notranslate"><span class="pre">SyntheticDataset</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.data.SyntheticDataset.data"><code class="docutils literal notranslate"><span class="pre">SyntheticDataset.data</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.data.SyntheticDataset.masks"><code class="docutils literal notranslate"><span class="pre">SyntheticDataset.masks</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.data.SyntheticDataset.labels"><code class="docutils literal notranslate"><span class="pre">SyntheticDataset.labels</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="si4onnx.html#si4onnx.data.generate_iid_data"><code class="docutils literal notranslate"><span class="pre">generate_iid_data()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="si4onnx.html#module-si4onnx.hypothesis">si4onnx.hypothesis module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="si4onnx.html#si4onnx.hypothesis.BackMeanDiff"><code class="docutils literal notranslate"><span class="pre">BackMeanDiff</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.hypothesis.BackMeanDiff.algorithm"><code class="docutils literal notranslate"><span class="pre">BackMeanDiff.algorithm()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.hypothesis.BackMeanDiff.construct_hypothesis"><code class="docutils literal notranslate"><span class="pre">BackMeanDiff.construct_hypothesis()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.hypothesis.BackMeanDiff.model_selector"><code class="docutils literal notranslate"><span class="pre">BackMeanDiff.model_selector()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="si4onnx.html#si4onnx.hypothesis.Hypothesis"><code class="docutils literal notranslate"><span class="pre">Hypothesis</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.hypothesis.Hypothesis.algorithm"><code class="docutils literal notranslate"><span class="pre">Hypothesis.algorithm()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.hypothesis.Hypothesis.construct_hypothesis"><code class="docutils literal notranslate"><span class="pre">Hypothesis.construct_hypothesis()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.hypothesis.Hypothesis.model_selector"><code class="docutils literal notranslate"><span class="pre">Hypothesis.model_selector()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="si4onnx.html#si4onnx.hypothesis.NeighborMeanDiff"><code class="docutils literal notranslate"><span class="pre">NeighborMeanDiff</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.hypothesis.NeighborMeanDiff.algorithm"><code class="docutils literal notranslate"><span class="pre">NeighborMeanDiff.algorithm()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.hypothesis.NeighborMeanDiff.construct_hypothesis"><code class="docutils literal notranslate"><span class="pre">NeighborMeanDiff.construct_hypothesis()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.hypothesis.NeighborMeanDiff.model_selector"><code class="docutils literal notranslate"><span class="pre">NeighborMeanDiff.model_selector()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="si4onnx.html#si4onnx.hypothesis.NoHypothesisError"><code class="docutils literal notranslate"><span class="pre">NoHypothesisError</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="si4onnx.html#si4onnx.hypothesis.PresetHypothesis"><code class="docutils literal notranslate"><span class="pre">PresetHypothesis</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="si4onnx.html#si4onnx.hypothesis.ReferenceMeanDiff"><code class="docutils literal notranslate"><span class="pre">ReferenceMeanDiff</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.hypothesis.ReferenceMeanDiff.algorithm"><code class="docutils literal notranslate"><span class="pre">ReferenceMeanDiff.algorithm()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.hypothesis.ReferenceMeanDiff.construct_hypothesis"><code class="docutils literal notranslate"><span class="pre">ReferenceMeanDiff.construct_hypothesis()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.hypothesis.ReferenceMeanDiff.model_selector"><code class="docutils literal notranslate"><span class="pre">ReferenceMeanDiff.model_selector()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="si4onnx.html#si4onnx.hypothesis.check_use_sigmoid"><code class="docutils literal notranslate"><span class="pre">check_use_sigmoid()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="si4onnx.html#module-si4onnx.layers">si4onnx.layers module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="si4onnx.html#si4onnx.layers.Add"><code class="docutils literal notranslate"><span class="pre">Add</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.layers.Add.forward"><code class="docutils literal notranslate"><span class="pre">Add.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.layers.Add.forward_si"><code class="docutils literal notranslate"><span class="pre">Add.forward_si()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="si4onnx.html#si4onnx.layers.AveragePool"><code class="docutils literal notranslate"><span class="pre">AveragePool</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.layers.AveragePool.forward"><code class="docutils literal notranslate"><span class="pre">AveragePool.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.layers.AveragePool.forward_si"><code class="docutils literal notranslate"><span class="pre">AveragePool.forward_si()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="si4onnx.html#si4onnx.layers.BatchNormalization"><code class="docutils literal notranslate"><span class="pre">BatchNormalization</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.layers.BatchNormalization.forward"><code class="docutils literal notranslate"><span class="pre">BatchNormalization.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.layers.BatchNormalization.forward_si"><code class="docutils literal notranslate"><span class="pre">BatchNormalization.forward_si()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="si4onnx.html#si4onnx.layers.Concat"><code class="docutils literal notranslate"><span class="pre">Concat</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.layers.Concat.forward"><code class="docutils literal notranslate"><span class="pre">Concat.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.layers.Concat.forward_si"><code class="docutils literal notranslate"><span class="pre">Concat.forward_si()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="si4onnx.html#si4onnx.layers.Constant"><code class="docutils literal notranslate"><span class="pre">Constant</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.layers.Constant.forward"><code class="docutils literal notranslate"><span class="pre">Constant.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.layers.Constant.forward_si"><code class="docutils literal notranslate"><span class="pre">Constant.forward_si()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="si4onnx.html#si4onnx.layers.ConstantOfShape"><code class="docutils literal notranslate"><span class="pre">ConstantOfShape</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.layers.ConstantOfShape.forward"><code class="docutils literal notranslate"><span class="pre">ConstantOfShape.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.layers.ConstantOfShape.forward_si"><code class="docutils literal notranslate"><span class="pre">ConstantOfShape.forward_si()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="si4onnx.html#si4onnx.layers.Conv"><code class="docutils literal notranslate"><span class="pre">Conv</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.layers.Conv.forward"><code class="docutils literal notranslate"><span class="pre">Conv.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.layers.Conv.forward_si"><code class="docutils literal notranslate"><span class="pre">Conv.forward_si()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="si4onnx.html#si4onnx.layers.ConvTranspose"><code class="docutils literal notranslate"><span class="pre">ConvTranspose</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.layers.ConvTranspose.forward"><code class="docutils literal notranslate"><span class="pre">ConvTranspose.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.layers.ConvTranspose.forward_si"><code class="docutils literal notranslate"><span class="pre">ConvTranspose.forward_si()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="si4onnx.html#si4onnx.layers.Div"><code class="docutils literal notranslate"><span class="pre">Div</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.layers.Div.forward"><code class="docutils literal notranslate"><span class="pre">Div.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.layers.Div.forward_si"><code class="docutils literal notranslate"><span class="pre">Div.forward_si()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="si4onnx.html#si4onnx.layers.Equal"><code class="docutils literal notranslate"><span class="pre">Equal</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.layers.Equal.forward"><code class="docutils literal notranslate"><span class="pre">Equal.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.layers.Equal.forward_si"><code class="docutils literal notranslate"><span class="pre">Equal.forward_si()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="si4onnx.html#si4onnx.layers.Exp"><code class="docutils literal notranslate"><span class="pre">Exp</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.layers.Exp.forward"><code class="docutils literal notranslate"><span class="pre">Exp.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.layers.Exp.forward_si"><code class="docutils literal notranslate"><span class="pre">Exp.forward_si()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="si4onnx.html#si4onnx.layers.EyeLike"><code class="docutils literal notranslate"><span class="pre">EyeLike</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.layers.EyeLike.forward"><code class="docutils literal notranslate"><span class="pre">EyeLike.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.layers.EyeLike.forward_si"><code class="docutils literal notranslate"><span class="pre">EyeLike.forward_si()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="si4onnx.html#si4onnx.layers.Flatten"><code class="docutils literal notranslate"><span class="pre">Flatten</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.layers.Flatten.forward"><code class="docutils literal notranslate"><span class="pre">Flatten.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.layers.Flatten.forward_si"><code class="docutils literal notranslate"><span class="pre">Flatten.forward_si()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="si4onnx.html#si4onnx.layers.Gemm"><code class="docutils literal notranslate"><span class="pre">Gemm</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.layers.Gemm.forward"><code class="docutils literal notranslate"><span class="pre">Gemm.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.layers.Gemm.forward_si"><code class="docutils literal notranslate"><span class="pre">Gemm.forward_si()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="si4onnx.html#si4onnx.layers.GlobalAveragePool"><code class="docutils literal notranslate"><span class="pre">GlobalAveragePool</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.layers.GlobalAveragePool.forward"><code class="docutils literal notranslate"><span class="pre">GlobalAveragePool.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.layers.GlobalAveragePool.forward_si"><code class="docutils literal notranslate"><span class="pre">GlobalAveragePool.forward_si()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="si4onnx.html#si4onnx.layers.Greater"><code class="docutils literal notranslate"><span class="pre">Greater</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.layers.Greater.forward"><code class="docutils literal notranslate"><span class="pre">Greater.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.layers.Greater.forward_si"><code class="docutils literal notranslate"><span class="pre">Greater.forward_si()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="si4onnx.html#si4onnx.layers.Layer"><code class="docutils literal notranslate"><span class="pre">Layer</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.layers.Layer.forward"><code class="docutils literal notranslate"><span class="pre">Layer.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.layers.Layer.forward_si"><code class="docutils literal notranslate"><span class="pre">Layer.forward_si()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="si4onnx.html#si4onnx.layers.LeakyRelu"><code class="docutils literal notranslate"><span class="pre">LeakyRelu</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.layers.LeakyRelu.forward"><code class="docutils literal notranslate"><span class="pre">LeakyRelu.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.layers.LeakyRelu.forward_si"><code class="docutils literal notranslate"><span class="pre">LeakyRelu.forward_si()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="si4onnx.html#si4onnx.layers.MatMul"><code class="docutils literal notranslate"><span class="pre">MatMul</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.layers.MatMul.forward"><code class="docutils literal notranslate"><span class="pre">MatMul.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.layers.MatMul.forward_si"><code class="docutils literal notranslate"><span class="pre">MatMul.forward_si()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="si4onnx.html#si4onnx.layers.MaxPool"><code class="docutils literal notranslate"><span class="pre">MaxPool</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.layers.MaxPool.forward"><code class="docutils literal notranslate"><span class="pre">MaxPool.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.layers.MaxPool.forward_si"><code class="docutils literal notranslate"><span class="pre">MaxPool.forward_si()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="si4onnx.html#si4onnx.layers.Mul"><code class="docutils literal notranslate"><span class="pre">Mul</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.layers.Mul.forward"><code class="docutils literal notranslate"><span class="pre">Mul.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.layers.Mul.forward_si"><code class="docutils literal notranslate"><span class="pre">Mul.forward_si()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="si4onnx.html#si4onnx.layers.RandomNormalLike"><code class="docutils literal notranslate"><span class="pre">RandomNormalLike</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.layers.RandomNormalLike.forward"><code class="docutils literal notranslate"><span class="pre">RandomNormalLike.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.layers.RandomNormalLike.forward_si"><code class="docutils literal notranslate"><span class="pre">RandomNormalLike.forward_si()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="si4onnx.html#si4onnx.layers.Reciprocal"><code class="docutils literal notranslate"><span class="pre">Reciprocal</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.layers.Reciprocal.forward"><code class="docutils literal notranslate"><span class="pre">Reciprocal.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.layers.Reciprocal.forward_si"><code class="docutils literal notranslate"><span class="pre">Reciprocal.forward_si()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="si4onnx.html#si4onnx.layers.ReduceSum"><code class="docutils literal notranslate"><span class="pre">ReduceSum</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.layers.ReduceSum.forward"><code class="docutils literal notranslate"><span class="pre">ReduceSum.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.layers.ReduceSum.forward_si"><code class="docutils literal notranslate"><span class="pre">ReduceSum.forward_si()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="si4onnx.html#si4onnx.layers.Relu"><code class="docutils literal notranslate"><span class="pre">Relu</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.layers.Relu.forward"><code class="docutils literal notranslate"><span class="pre">Relu.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.layers.Relu.forward_si"><code class="docutils literal notranslate"><span class="pre">Relu.forward_si()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="si4onnx.html#si4onnx.layers.Reshape"><code class="docutils literal notranslate"><span class="pre">Reshape</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.layers.Reshape.forward"><code class="docutils literal notranslate"><span class="pre">Reshape.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.layers.Reshape.forward_si"><code class="docutils literal notranslate"><span class="pre">Reshape.forward_si()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="si4onnx.html#si4onnx.layers.Resize"><code class="docutils literal notranslate"><span class="pre">Resize</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.layers.Resize.forward"><code class="docutils literal notranslate"><span class="pre">Resize.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.layers.Resize.forward_si"><code class="docutils literal notranslate"><span class="pre">Resize.forward_si()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="si4onnx.html#si4onnx.layers.Shape"><code class="docutils literal notranslate"><span class="pre">Shape</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.layers.Shape.forward"><code class="docutils literal notranslate"><span class="pre">Shape.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.layers.Shape.forward_si"><code class="docutils literal notranslate"><span class="pre">Shape.forward_si()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="si4onnx.html#si4onnx.layers.Sigmoid"><code class="docutils literal notranslate"><span class="pre">Sigmoid</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.layers.Sigmoid.forward"><code class="docutils literal notranslate"><span class="pre">Sigmoid.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.layers.Sigmoid.forward_si"><code class="docutils literal notranslate"><span class="pre">Sigmoid.forward_si()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="si4onnx.html#si4onnx.layers.Slice"><code class="docutils literal notranslate"><span class="pre">Slice</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.layers.Slice.forward"><code class="docutils literal notranslate"><span class="pre">Slice.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.layers.Slice.forward_si"><code class="docutils literal notranslate"><span class="pre">Slice.forward_si()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="si4onnx.html#si4onnx.layers.Split"><code class="docutils literal notranslate"><span class="pre">Split</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.layers.Split.forward"><code class="docutils literal notranslate"><span class="pre">Split.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.layers.Split.forward_si"><code class="docutils literal notranslate"><span class="pre">Split.forward_si()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="si4onnx.html#si4onnx.layers.Squeeze"><code class="docutils literal notranslate"><span class="pre">Squeeze</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.layers.Squeeze.forward"><code class="docutils literal notranslate"><span class="pre">Squeeze.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.layers.Squeeze.forward_si"><code class="docutils literal notranslate"><span class="pre">Squeeze.forward_si()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="si4onnx.html#si4onnx.layers.Sub"><code class="docutils literal notranslate"><span class="pre">Sub</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.layers.Sub.forward"><code class="docutils literal notranslate"><span class="pre">Sub.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.layers.Sub.forward_si"><code class="docutils literal notranslate"><span class="pre">Sub.forward_si()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="si4onnx.html#si4onnx.layers.Transpose"><code class="docutils literal notranslate"><span class="pre">Transpose</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.layers.Transpose.forward"><code class="docutils literal notranslate"><span class="pre">Transpose.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.layers.Transpose.forward_si"><code class="docutils literal notranslate"><span class="pre">Transpose.forward_si()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="si4onnx.html#si4onnx.layers.Unsqueeze"><code class="docutils literal notranslate"><span class="pre">Unsqueeze</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.layers.Unsqueeze.forward"><code class="docutils literal notranslate"><span class="pre">Unsqueeze.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.layers.Unsqueeze.forward_si"><code class="docutils literal notranslate"><span class="pre">Unsqueeze.forward_si()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="si4onnx.html#module-si4onnx.nn">si4onnx.nn module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="si4onnx.html#si4onnx.nn.NN"><code class="docutils literal notranslate"><span class="pre">NN</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.nn.NN.forward"><code class="docutils literal notranslate"><span class="pre">NN.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.nn.NN.forward_si"><code class="docutils literal notranslate"><span class="pre">NN.forward_si()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="si4onnx.html#module-si4onnx.operators">si4onnx.operators module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="si4onnx.html#si4onnx.operators.Abs"><code class="docutils literal notranslate"><span class="pre">Abs</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.operators.Abs.forward"><code class="docutils literal notranslate"><span class="pre">Abs.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.operators.Abs.forward_si"><code class="docutils literal notranslate"><span class="pre">Abs.forward_si()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="si4onnx.html#si4onnx.operators.AverageFilter"><code class="docutils literal notranslate"><span class="pre">AverageFilter</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.operators.AverageFilter.forward"><code class="docutils literal notranslate"><span class="pre">AverageFilter.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.operators.AverageFilter.forward_si"><code class="docutils literal notranslate"><span class="pre">AverageFilter.forward_si()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="si4onnx.html#si4onnx.operators.GaussianFilter"><code class="docutils literal notranslate"><span class="pre">GaussianFilter</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.operators.GaussianFilter.forward"><code class="docutils literal notranslate"><span class="pre">GaussianFilter.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.operators.GaussianFilter.forward_si"><code class="docutils literal notranslate"><span class="pre">GaussianFilter.forward_si()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="si4onnx.html#si4onnx.operators.InputDiff"><code class="docutils literal notranslate"><span class="pre">InputDiff</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.operators.InputDiff.forward"><code class="docutils literal notranslate"><span class="pre">InputDiff.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.operators.InputDiff.forward_si"><code class="docutils literal notranslate"><span class="pre">InputDiff.forward_si()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="si4onnx.html#si4onnx.operators.Neg"><code class="docutils literal notranslate"><span class="pre">Neg</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.operators.Neg.forward"><code class="docutils literal notranslate"><span class="pre">Neg.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.operators.Neg.forward_si"><code class="docutils literal notranslate"><span class="pre">Neg.forward_si()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="si4onnx.html#si4onnx.operators.Operator"><code class="docutils literal notranslate"><span class="pre">Operator</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.operators.Operator.forward"><code class="docutils literal notranslate"><span class="pre">Operator.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.operators.Operator.forward_si"><code class="docutils literal notranslate"><span class="pre">Operator.forward_si()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="si4onnx.html#module-si4onnx.si">si4onnx.si module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="si4onnx.html#si4onnx.si.InferenceResult"><code class="docutils literal notranslate"><span class="pre">InferenceResult</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.si.InferenceResult.output"><code class="docutils literal notranslate"><span class="pre">InferenceResult.output</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.si.InferenceResult.score_map"><code class="docutils literal notranslate"><span class="pre">InferenceResult.score_map</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.si.InferenceResult.roi"><code class="docutils literal notranslate"><span class="pre">InferenceResult.roi</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.si.InferenceResult.non_roi"><code class="docutils literal notranslate"><span class="pre">InferenceResult.non_roi</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#id0"><code class="docutils literal notranslate"><span class="pre">InferenceResult.non_roi</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#id1"><code class="docutils literal notranslate"><span class="pre">InferenceResult.output</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#id2"><code class="docutils literal notranslate"><span class="pre">InferenceResult.roi</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#id3"><code class="docutils literal notranslate"><span class="pre">InferenceResult.score_map</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="si4onnx.html#si4onnx.si.PresetSelectiveInferenceModel"><code class="docutils literal notranslate"><span class="pre">PresetSelectiveInferenceModel</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.si.PresetSelectiveInferenceModel.algorithm"><code class="docutils literal notranslate"><span class="pre">PresetSelectiveInferenceModel.algorithm()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.si.PresetSelectiveInferenceModel.construct_hypothesis"><code class="docutils literal notranslate"><span class="pre">PresetSelectiveInferenceModel.construct_hypothesis()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.si.PresetSelectiveInferenceModel.inference"><code class="docutils literal notranslate"><span class="pre">PresetSelectiveInferenceModel.inference()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.si.PresetSelectiveInferenceModel.model_selector"><code class="docutils literal notranslate"><span class="pre">PresetSelectiveInferenceModel.model_selector()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="si4onnx.html#si4onnx.si.SelectiveInferenceModel"><code class="docutils literal notranslate"><span class="pre">SelectiveInferenceModel</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.si.SelectiveInferenceModel.algorithm"><code class="docutils literal notranslate"><span class="pre">SelectiveInferenceModel.algorithm()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.si.SelectiveInferenceModel.construct_hypothesis"><code class="docutils literal notranslate"><span class="pre">SelectiveInferenceModel.construct_hypothesis()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.si.SelectiveInferenceModel.forward"><code class="docutils literal notranslate"><span class="pre">SelectiveInferenceModel.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.si.SelectiveInferenceModel.inference"><code class="docutils literal notranslate"><span class="pre">SelectiveInferenceModel.inference()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.si.SelectiveInferenceModel.model_selector"><code class="docutils literal notranslate"><span class="pre">SelectiveInferenceModel.model_selector()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="si4onnx.html#si4onnx.si.load"><code class="docutils literal notranslate"><span class="pre">load()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="si4onnx.html#module-si4onnx.utils">si4onnx.utils module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="si4onnx.html#si4onnx.utils.thresholding"><code class="docutils literal notranslate"><span class="pre">thresholding()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="si4onnx.html#si4onnx.utils.to_numpy"><code class="docutils literal notranslate"><span class="pre">to_numpy()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="si4onnx.html#si4onnx.utils.to_torch_tensor"><code class="docutils literal notranslate"><span class="pre">to_torch_tensor()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="si4onnx.html#module-si4onnx">Module contents</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="si4onnx.html#si4onnx.Abs"><code class="docutils literal notranslate"><span class="pre">Abs</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.Abs.forward"><code class="docutils literal notranslate"><span class="pre">Abs.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.Abs.forward_si"><code class="docutils literal notranslate"><span class="pre">Abs.forward_si()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="si4onnx.html#si4onnx.AverageFilter"><code class="docutils literal notranslate"><span class="pre">AverageFilter</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.AverageFilter.forward"><code class="docutils literal notranslate"><span class="pre">AverageFilter.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.AverageFilter.forward_si"><code class="docutils literal notranslate"><span class="pre">AverageFilter.forward_si()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="si4onnx.html#si4onnx.BackMeanDiff"><code class="docutils literal notranslate"><span class="pre">BackMeanDiff</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.BackMeanDiff.algorithm"><code class="docutils literal notranslate"><span class="pre">BackMeanDiff.algorithm()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.BackMeanDiff.construct_hypothesis"><code class="docutils literal notranslate"><span class="pre">BackMeanDiff.construct_hypothesis()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.BackMeanDiff.model_selector"><code class="docutils literal notranslate"><span class="pre">BackMeanDiff.model_selector()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="si4onnx.html#si4onnx.GaussianFilter"><code class="docutils literal notranslate"><span class="pre">GaussianFilter</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.GaussianFilter.forward"><code class="docutils literal notranslate"><span class="pre">GaussianFilter.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.GaussianFilter.forward_si"><code class="docutils literal notranslate"><span class="pre">GaussianFilter.forward_si()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="si4onnx.html#si4onnx.Hypothesis"><code class="docutils literal notranslate"><span class="pre">Hypothesis</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.Hypothesis.algorithm"><code class="docutils literal notranslate"><span class="pre">Hypothesis.algorithm()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.Hypothesis.construct_hypothesis"><code class="docutils literal notranslate"><span class="pre">Hypothesis.construct_hypothesis()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.Hypothesis.model_selector"><code class="docutils literal notranslate"><span class="pre">Hypothesis.model_selector()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="si4onnx.html#si4onnx.InputDiff"><code class="docutils literal notranslate"><span class="pre">InputDiff</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.InputDiff.forward"><code class="docutils literal notranslate"><span class="pre">InputDiff.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.InputDiff.forward_si"><code class="docutils literal notranslate"><span class="pre">InputDiff.forward_si()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="si4onnx.html#si4onnx.NN"><code class="docutils literal notranslate"><span class="pre">NN</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.NN.forward"><code class="docutils literal notranslate"><span class="pre">NN.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.NN.forward_si"><code class="docutils literal notranslate"><span class="pre">NN.forward_si()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="si4onnx.html#si4onnx.Neg"><code class="docutils literal notranslate"><span class="pre">Neg</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.Neg.forward"><code class="docutils literal notranslate"><span class="pre">Neg.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.Neg.forward_si"><code class="docutils literal notranslate"><span class="pre">Neg.forward_si()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="si4onnx.html#si4onnx.NeighborMeanDiff"><code class="docutils literal notranslate"><span class="pre">NeighborMeanDiff</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.NeighborMeanDiff.algorithm"><code class="docutils literal notranslate"><span class="pre">NeighborMeanDiff.algorithm()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.NeighborMeanDiff.construct_hypothesis"><code class="docutils literal notranslate"><span class="pre">NeighborMeanDiff.construct_hypothesis()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.NeighborMeanDiff.model_selector"><code class="docutils literal notranslate"><span class="pre">NeighborMeanDiff.model_selector()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="si4onnx.html#si4onnx.Operator"><code class="docutils literal notranslate"><span class="pre">Operator</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.Operator.forward"><code class="docutils literal notranslate"><span class="pre">Operator.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.Operator.forward_si"><code class="docutils literal notranslate"><span class="pre">Operator.forward_si()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="si4onnx.html#si4onnx.ReferenceMeanDiff"><code class="docutils literal notranslate"><span class="pre">ReferenceMeanDiff</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.ReferenceMeanDiff.algorithm"><code class="docutils literal notranslate"><span class="pre">ReferenceMeanDiff.algorithm()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.ReferenceMeanDiff.construct_hypothesis"><code class="docutils literal notranslate"><span class="pre">ReferenceMeanDiff.construct_hypothesis()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.ReferenceMeanDiff.model_selector"><code class="docutils literal notranslate"><span class="pre">ReferenceMeanDiff.model_selector()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="si4onnx.html#si4onnx.SelectiveInferenceModel"><code class="docutils literal notranslate"><span class="pre">SelectiveInferenceModel</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.SelectiveInferenceModel.algorithm"><code class="docutils literal notranslate"><span class="pre">SelectiveInferenceModel.algorithm()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.SelectiveInferenceModel.construct_hypothesis"><code class="docutils literal notranslate"><span class="pre">SelectiveInferenceModel.construct_hypothesis()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.SelectiveInferenceModel.forward"><code class="docutils literal notranslate"><span class="pre">SelectiveInferenceModel.forward()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.SelectiveInferenceModel.inference"><code class="docutils literal notranslate"><span class="pre">SelectiveInferenceModel.inference()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.SelectiveInferenceModel.model_selector"><code class="docutils literal notranslate"><span class="pre">SelectiveInferenceModel.model_selector()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="si4onnx.html#si4onnx.SyntheticDataset"><code class="docutils literal notranslate"><span class="pre">SyntheticDataset</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.SyntheticDataset.data"><code class="docutils literal notranslate"><span class="pre">SyntheticDataset.data</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.SyntheticDataset.masks"><code class="docutils literal notranslate"><span class="pre">SyntheticDataset.masks</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="si4onnx.html#si4onnx.SyntheticDataset.labels"><code class="docutils literal notranslate"><span class="pre">SyntheticDataset.labels</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="si4onnx.html#si4onnx.load"><code class="docutils literal notranslate"><span class="pre">load()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="si4onnx.html#si4onnx.thresholding"><code class="docutils literal notranslate"><span class="pre">thresholding()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
 </div>
 </section>
 
 
            </div>
           </div>
-          <footer>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="modules.html" class="btn btn-neutral float-right" title="si4onnx" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
 
   <hr/>
 
