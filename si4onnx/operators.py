@@ -184,21 +184,24 @@ class AverageFilter(Operator):
         self.kernel_size = kernel_size
         self.padding = kernel_size // 2
 
-    def _create_kernel(self, dim):
+    def _create_kernel(self, dim, channels):
         if dim == 3:  # 1D input
-            kernel = torch.ones((1, 1, self.kernel_size), dtype=torch.float64)
+            kernel = torch.ones((channels, 1, self.kernel_size), dtype=torch.float64)
             kernel = kernel / self.kernel_size
-        else:  # 2D input
+        elif dim == 4:  # 2D input with potentially multiple channels (e.g., RGB)
             kernel = torch.ones(
-                (1, 1, self.kernel_size, self.kernel_size), dtype=torch.float64
+                (channels, 1, self.kernel_size, self.kernel_size), dtype=torch.float64
             )
             kernel = kernel / (self.kernel_size**2)
+        else:
+            raise ValueError("Unsupported shape")
         return nn.Parameter(kernel, requires_grad=False)
 
     def forward(self, x):
-        kernel = self._create_kernel(x.dim())
+        channels = x.shape[1]
+        kernel = self._create_kernel(x.dim(), channels)
         conv_func = {3: F.conv1d, 4: F.conv2d}[x.dim()]
-        return conv_func(x, kernel, padding=self.padding, groups=x.shape[1])
+        return conv_func(x, kernel, padding=self.padding, groups=channels)
 
     def forward_si(self, x, a, b, l, u, z):
         """
@@ -327,3 +330,84 @@ class GaussianFilter(Operator):
         output_a = self.forward(a)
         output_b = self.forward(b)
         return output_x, output_a, output_b, l, u
+
+
+class L1Norm(Operator):
+    def __init__(self, *args, **kwargs):
+        """
+        Compute the L1 norm along the channel dimension (automatically detected).
+        """
+        super().__init__()
+
+    def forward(self, x):
+        """Compute the L1 norm of the input tensor.
+
+        Parameters
+        ----------
+        x : torch.Tensor
+            input tensor
+
+        Returns
+        -------
+        output : torch.Tensor
+            output tensor
+        """
+        if x.dim() == 3:
+            self.channel_dim = 0
+            self.channels = x.shape[0]
+        elif x.dim() == 4:
+            self.channel_dim = 1
+            self.channels = x.shape[1]
+        else:
+            raise ValueError(f"Unsupported shape: {x.shape}")
+
+        output = (
+            x.abs()
+            .sum(dim=self.channel_dim, keepdim=True)
+            .repeat_interleave(self.channels, dim=self.channel_dim)
+        )
+        return output
+
+    def forward_si(self, x, a, b, l, u, z):
+        """
+        Apply L1 norm across the channel dimension for selective inference components.
+        
+        Parameters
+        ----------
+        x : torch.Tensor | list[torch.Tensor]
+            input tensor or tensor list
+        a : torch.Tensor | list[torch.Tensor]
+            a tensor or tensor list
+        b : torch.Tensor | list[torch.Tensor]
+            b tensor or tensor list
+        l : torch.Tensor | list[torch.Tensor]
+            l tensor or tensor list
+        u : torch.Tensor | list[torch.Tensor]
+            u tensor or tensor list
+        z : float
+
+        Returns
+        -------
+        output_x : torch.Tensor | list[torch.Tensor]
+            output tensor or tensor list
+        output_a : torch.Tensor | list[torch.Tensor]
+            output a tensor or tensor list
+        output_b : torch.Tensor | list[torch.Tensor]
+            output b tensor or tensor list
+        l : torch.Tensor | list[torch.Tensor]
+            lower bound of the truncated interval
+        u : torch.Tensor | list[torch.Tensor]
+            upper bound of the truncated interval
+        """
+        x, a, b, l, u = Abs().forward_si(x, a, b, l, u, z)
+        x = x.sum(dim=self.channel_dim, keepdim=True).repeat_interleave(
+            self.channels, dim=self.channel_dim
+        )
+        a = a.sum(dim=self.channel_dim, keepdim=True).repeat_interleave(
+            self.channels, dim=self.channel_dim
+        )
+        b = b.sum(dim=self.channel_dim, keepdim=True).repeat_interleave(
+            self.channels, dim=self.channel_dim
+        )
+
+        return x, a, b, l, u
