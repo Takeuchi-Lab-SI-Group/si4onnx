@@ -20,7 +20,7 @@ rng = np.random.default_rng(0)
 input_x = torch.from_numpy(rng.normal(size=(1, 1, 28, 28)))
 
 
-class CustomSIModel(si4onnx.SIModel):
+class CustomSelectiveInferenceModel(si4onnx.SelectiveInferenceModel):
     def __init__(self, model, thr):
         super().__init__()
         self.si_model = si4onnx.NN(model)
@@ -79,7 +79,7 @@ model_path = "../tests/models/unet.onnx"
 onnx_model = onnx.load(model_path)
 
 # make si model
-si_model = CustomSIModel(model=onnx_model, thr=0.1)
+si_model = CustomSelectiveInferenceModel(model=onnx_model, thr=0.1)
 
 # inference
 with utils.timer("calculation time"):
