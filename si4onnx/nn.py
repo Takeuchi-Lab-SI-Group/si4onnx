@@ -68,6 +68,7 @@ class NN(torch.nn.Module):
         self.seed = seed
         self.memoization = memoization
         self.is_memoization_initialized = True
+        self.cache = dict()
         self.output_name_set = set(output.name for output in self.model.graph.output)
 
         # Available layers
@@ -210,6 +211,7 @@ class NN(torch.nn.Module):
         outputs = [node_output[output.name] for output in self.model.graph.output]
 
         self.is_memoization_initialized = True
+        self.cache.clear()
 
         if len(outputs) == 1:
             return outputs[0]
@@ -250,23 +252,20 @@ class NN(torch.nn.Module):
         node_output_si = dict()
         INF = torch.tensor(torch.inf).double()
 
-        if not self.is_memoization_initialized:
-            if hasattr(self, "output"):
-                node_output = self.output.copy()
-                node_output_si = self.output_si.copy()
-            elif hasattr(self, "_output"):
-                node_output = self._output.copy()
-                node_output_si = self._output_si.copy()
-        else:
-            for tensor in self.model.graph.initializer:
-                arr = numpy_helper.to_array(tensor)
-                if tensor.data_type == 7:
-                    arr = torch.tensor(arr).long()
-                else:
-                    arr = torch.tensor(arr).double()
+        cache_key = "positive" if z > 0 else "negative"
+        if self.memoization and (not self.is_memoization_initialized):
+            if cache_key in self.cache:
+                node_output = self.cache[cache_key]["output"].copy()
+                node_output_si = self.cache[cache_key]["output_si"].copy()
 
-                node_output[tensor.name] = arr
-                node_output_si[tensor.name] = (arr, None, -INF, INF)
+        for tensor in self.model.graph.initializer:
+            arr = numpy_helper.to_array(tensor)
+            if tensor.data_type == 7:
+                arr = torch.tensor(arr).long()
+            else:
+                arr = torch.tensor(arr).double()
+            node_output[tensor.name] = arr
+            node_output_si[tensor.name] = (arr, None, -INF, INF)
 
         for i, input_node in enumerate(self.model.graph.input):
             if len(self.model.graph.input) == 1:
@@ -296,14 +295,12 @@ class NN(torch.nn.Module):
 
         # Find the start node
         start_node_index = 0
-        if self.memoization and not self.is_memoization_initialized:
-            if z > 0 and hasattr(self, "output"):
+        if self.memoization and (not self.is_memoization_initialized):
+            if cache_key in self.cache:
                 start_node_index, node_output, node_output_si = self._search_start_node(
-                    z, self.output, self.output_si
-                )
-            elif hasattr(self, "_output"):
-                start_node_index, node_output, node_output_si = self._search_start_node(
-                    z, self._output, self._output_si
+                    z,
+                    self.cache[cache_key]["output"],
+                    self.cache[cache_key]["output_si"],
                 )
 
         with torch.no_grad():
@@ -342,13 +339,8 @@ class NN(torch.nn.Module):
                         node_output_si[output_name] = (a[i], b[i], l[i], u[i])
                     u = u[-1]
 
-        if u > 0:
-            self.output = node_output
-            self.output_si = node_output_si
-        else:
-            self._output = node_output
-            self._output_si = node_output_si
-
+        cache_key = "positive" if u > 0 else "negative"
+        self.cache[cache_key] = {"output": node_output, "output_si": node_output_si}
         self.is_memoization_initialized = False
 
         x, output_a, output_b, l, u = zip(
