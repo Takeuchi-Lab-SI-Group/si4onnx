@@ -1,9 +1,10 @@
 from abc import ABC, abstractmethod
+
 import numpy as np
 import torch
 import torch.nn as nn
-from .utils import truncated_interval
 
+from .utils import truncated_interval
 
 INF = torch.tensor(torch.inf, dtype=torch.double)
 
@@ -875,14 +876,14 @@ class Resize(Layer):
 
         if self.input.dim() == 4:
             if self.scales is not None:
-                self.scales = (float(self.scales[2]), float(self.scales[3]))
+                self.scales = (float(self.scales[-2]), float(self.scales[-1]))
             if self.mode == "linear":
                 self.mode = "bilinear"
             elif self.mode == "cubic":
                 self.mode = "bicubic"
         elif self.input.dim() == 3:
             if self.scales is not None:
-                self.scales = (float(self.scales[1]),)
+                self.scales = (float(self.scales[-1]),)
 
     def forward(self):
         output = torch.nn.functional.interpolate(
