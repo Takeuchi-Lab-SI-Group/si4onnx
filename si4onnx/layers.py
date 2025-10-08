@@ -123,6 +123,30 @@ class Sigmoid(Layer):
         return output_a, output_b, l, u
 
 
+class Softmax(Layer):
+    """
+    Softmax activation function can be used only in the intermediate layers
+    that are not subject to the test or the final layer of the input subject to the test.
+    """
+
+    def __init__(self, inputs, node):
+        super().__init__(inputs, node)
+        self.axis = self.attribute["axis"].i
+
+    def forward(self, x):
+        output = torch.nn.functional.softmax(x, dim=self.axis)
+        return output
+
+    def forward_si(self, a, b, l, u, z):
+        if b is not None:
+            output_a = a
+            output_b = b
+        else:
+            output_a = a
+            output_b = None
+        return output_a, output_b, l, u
+
+
 class Conv(Layer):
     def __init__(self, inputs, node):
         super().__init__(inputs, node)
@@ -650,7 +674,7 @@ class Slice(Layer):
 
     def forward(self, x):
         slices = [slice(None)] * x.dim()
-
+        print(slices)
         if self.axes is None:
             axes = list(range(x.dim()))
         else:
@@ -668,8 +692,9 @@ class Slice(Layer):
                 if self.steps is not None and i < len(self.steps)
                 else None
             )
-
+            print(start, end, step)
             slices[axis] = slice(start, end, step)
+        print(x, slices)
         output = x[tuple(slices)]
         return output
 
