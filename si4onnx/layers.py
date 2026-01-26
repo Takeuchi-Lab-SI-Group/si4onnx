@@ -691,7 +691,6 @@ class Slice(Layer):
                 if self.steps is not None and i < len(self.steps)
                 else None
             )
-            print(start, end, step)
             slices[axis] = slice(start, end, step)
         output = x[tuple(slices)]
         return output
