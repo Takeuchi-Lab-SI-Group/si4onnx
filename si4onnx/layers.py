@@ -674,7 +674,6 @@ class Slice(Layer):
 
     def forward(self, x):
         slices = [slice(None)] * x.dim()
-        print(slices)
         if self.axes is None:
             axes = list(range(x.dim()))
         else:
@@ -694,7 +693,6 @@ class Slice(Layer):
             )
             print(start, end, step)
             slices[axis] = slice(start, end, step)
-        print(x, slices)
         output = x[tuple(slices)]
         return output
 
